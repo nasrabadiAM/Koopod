@@ -1,0 +1,2 @@
+rootProject.name = "KooPod"
+include ':app'

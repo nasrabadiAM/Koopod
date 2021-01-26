@@ -1,7 +1,9 @@
 package com.nasabadiam.koopod.utils
 
 import android.view.View
+import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.nasabadiam.koopod.ResourceState
 
 class DataBindingComponent {
@@ -34,6 +36,14 @@ class DataBindingComponent {
                 ResourceState.SuccessEmpty -> view.visibility = View.VISIBLE
                 else -> view.visibility = View.GONE
             }
+        }
+
+        @BindingAdapter("app:imageUrl")
+        @JvmStatic
+        fun bindImageUrl(view: ImageView, url: String?) {
+            Glide.with(view.context)
+                .load(url)
+                .into(view)
         }
     }
 }

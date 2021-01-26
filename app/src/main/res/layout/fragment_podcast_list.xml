@@ -21,7 +21,11 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             app:contentVisibility="@{viewModel.state}"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:podcastItems="@{viewModel.data}"
+            app:viewModel="@{viewModel}"
+            tools:itemCount="10"
+            tools:listitem="@layout/list_podcast_item" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/message"

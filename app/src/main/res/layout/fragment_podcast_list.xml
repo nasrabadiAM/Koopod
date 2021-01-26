@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.nasabadiam.koopod.ui.main.PodcastListViewModel" />
+            type="com.nasabadiam.koopod.ui.podcastlist.PodcastListViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

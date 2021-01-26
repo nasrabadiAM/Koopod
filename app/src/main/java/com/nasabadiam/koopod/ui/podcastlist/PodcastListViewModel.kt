@@ -1,6 +1,7 @@
-package com.nasabadiam.koopod.ui.main
+package com.nasabadiam.koopod.ui.podcastlist
 
 import com.nasabadiam.koopod.ResourceState
+import com.nasabadiam.koopod.utils.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

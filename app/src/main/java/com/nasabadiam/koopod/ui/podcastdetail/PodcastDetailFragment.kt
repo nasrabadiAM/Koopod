@@ -1,4 +1,4 @@
-package com.nasabadiam.koopod.ui.main
+package com.nasabadiam.koopod.ui.podcastdetail
 
 import android.os.Bundle
 import android.view.LayoutInflater

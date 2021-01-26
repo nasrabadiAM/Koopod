@@ -1,4 +1,4 @@
-package com.nasabadiam.koopod.ui.main
+package com.nasabadiam.koopod.utils
 
 import androidx.lifecycle.ViewModel
 

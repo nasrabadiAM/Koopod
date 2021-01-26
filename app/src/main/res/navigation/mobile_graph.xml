@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/podcastListFragment"
-        android:name="com.nasabadiam.koopod.ui.main.PodcastListFragment"
+        android:name="com.nasabadiam.koopod.ui.podcastlist.PodcastListFragment"
         android:label="PodcastListFragment">
         <action
             android:id="@+id/toPodCastDetail"
@@ -15,6 +15,6 @@
 
     <fragment
         android:id="@+id/podcastDetailFragment"
-        android:name="com.nasabadiam.koopod.ui.main.PodcastDetailFragment"
+        android:name="com.nasabadiam.koopod.ui.podcastdetail.PodcastDetailFragment"
         android:label="PodcastDetailFragment" />
 </navigation>

@@ -2,6 +2,7 @@ package com.nasabadiam.koopod.utils
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.nasabadiam.koopod.ResourceState
@@ -44,6 +45,15 @@ class DataBindingComponent {
             Glide.with(view.context)
                 .load(url)
                 .into(view)
+        }
+
+        @BindingAdapter("app:textId")
+        @JvmStatic
+        fun bindImageUrl(view: TextView, textId: Int?) {
+            textId?.let {
+                if (textId == 0) return
+                view.setText(textId)
+            }
         }
     }
 }

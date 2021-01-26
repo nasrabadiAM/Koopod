@@ -5,10 +5,14 @@ buildscript {
         google()
         jcenter()
     }
+
+    ext.hilt_version = '2.28-alpha'
     dependencies {
         classpath Libs.androidGradlePlugin
         classpath Libs.Kotlin.gradlePlugin
-    }}
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+    }
+}
 
 allprojects {
     repositories {

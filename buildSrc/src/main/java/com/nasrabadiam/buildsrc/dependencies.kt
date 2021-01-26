@@ -19,6 +19,12 @@ object Libs {
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
     }
 
+    object Di {
+        private const val version = "2.28-alpha"
+        const val hilt = "com.google.dagger:hilt-android:$version"
+        const val hiltCompiler = "com.google.dagger:hilt-android-compiler:$version"
+    }
+
     object Coroutines {
         private const val version = "1.4.2"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
@@ -42,7 +48,8 @@ object Libs {
             const val foundation = "androidx.compose.foundation:foundation:$version"
             const val layout = "androidx.compose.foundation:foundation-layout:$version"
             const val material = "androidx.compose.material:material:$version"
-            const val materialIconsExtended = "androidx.compose.material:material-icons-extended:$version"
+            const val materialIconsExtended =
+                "androidx.compose.material:material-icons-extended:$version"
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$version"
             const val tooling = "androidx.compose.ui:ui-tooling:$version"
@@ -82,6 +89,6 @@ object Libs {
 
 object Urls {
     const val composeSnapshotRepo = "https://androidx.dev/snapshots/builds/" +
-        "${Libs.AndroidX.Compose.snapshot}/artifacts/repository/"
+            "${Libs.AndroidX.Compose.snapshot}/artifacts/repository/"
     const val accompanistSnapshotRepo = "https://oss.sonatype.org/content/repositories/snapshots"
 }

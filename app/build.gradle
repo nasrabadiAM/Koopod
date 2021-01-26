@@ -3,6 +3,8 @@ import com.nasrabadiam.buildsrc.Libs
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -24,8 +26,7 @@ android {
     }
 
     buildFeatures {
-        compose true
-        viewBinding true
+        dataBinding true
     }
 
     buildTypes {
@@ -57,20 +58,14 @@ dependencies {
 
     implementation Libs.material
 
-    implementation Libs.AndroidX.Compose.layout
-    implementation Libs.AndroidX.Compose.material
-    implementation Libs.AndroidX.Compose.materialIconsExtended
-    implementation Libs.AndroidX.Compose.tooling
-    implementation Libs.AndroidX.Compose.uiUtil
-    implementation Libs.AndroidX.Compose.runtime
-    implementation Libs.AndroidX.Compose.viewBinding
-
     implementation Libs.Accompanist.insets
+
+    implementation Libs.Di.hilt
+    kapt Libs.Di.hiltCompiler
 
     androidTestImplementation Libs.junit
     androidTestImplementation Libs.AndroidX.Test.core
     androidTestImplementation Libs.AndroidX.Test.espressoCore
     androidTestImplementation Libs.AndroidX.Test.rules
     androidTestImplementation Libs.AndroidX.Test.Ext.junit
-    androidTestImplementation Libs.AndroidX.Compose.uiTest
 }

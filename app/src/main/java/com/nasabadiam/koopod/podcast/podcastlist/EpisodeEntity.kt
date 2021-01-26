@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "episode", primaryKeys = ["guid", "id"])
+@Entity(tableName = "episode")
 data class EpisodeEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
     @ColumnInfo(name = "guid") var guid: String = UUID.randomUUID().toString(),

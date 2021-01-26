@@ -3,8 +3,9 @@ package com.nasabadiam.koopod.podcast.podcastlist
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.nasabadiam.koopod.ui.podcastlist.PodcastItem
 
-@Entity(tableName = "podcast", primaryKeys = ["rss_link", "id"])
+@Entity(tableName = "podcast")
 data class PodcastEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
     @ColumnInfo(name = "rss_link") var rssLink: String = "",

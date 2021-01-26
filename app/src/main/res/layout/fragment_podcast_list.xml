@@ -32,9 +32,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="@{viewModel.message}"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            app:textId="@{viewModel.message}"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:messageVisibility="@{viewModel.state}"
             tools:text="پیام متنی در وسط صفحه که به کاربر نمایش داده می‌شود تا وضعیت خالی صفحه برای او قابل فهم باشد" />

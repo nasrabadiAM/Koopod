@@ -20,4 +20,8 @@ data class PodcastEntity(
     @ColumnInfo(name = "language") var language: String = "",
     @ColumnInfo(name = "category") var category: String = "",
     @ColumnInfo(name = "description") var description: String = ""
-)
+) {
+    fun toPodcastItem(): PodcastItem {
+        return PodcastItem(id.toString(), title, image, description)
+    }
+}

@@ -9,8 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.nasabadiam.koopod.databinding.FragmentPodcastListBinding
 import com.nasabadiam.koopod.utils.collectAsState
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class PodcastListFragment : Fragment() {
 
     private val viewModel: PodcastListViewModel by viewModels()
@@ -27,6 +28,7 @@ class PodcastListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.onViewCreated()
         collectAsState(viewModel.navigation) {
             it?.let { dir ->
                 findNavController().navigate(dir)

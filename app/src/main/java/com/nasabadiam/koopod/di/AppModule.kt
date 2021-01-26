@@ -6,13 +6,16 @@ import com.nasabadiam.koopod.podcast.podcastlist.PodcastDatabase
 import com.nasabadiam.koopod.podcast.podcastlist.PodcastLocalDataSource
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
-abstract class AppModule {
+@InstallIn(ApplicationComponent::class)
+object AppModule {
 
     @Singleton
     @Provides

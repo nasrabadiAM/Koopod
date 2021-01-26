@@ -34,9 +34,9 @@
             android:gravity="center"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
-            app:textId="@{viewModel.message}"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:messageVisibility="@{viewModel.state}"
+            app:textId="@{viewModel.message}"
             tools:text="پیام متنی در وسط صفحه که به کاربر نمایش داده می‌شود تا وضعیت خالی صفحه برای او قابل فهم باشد" />
 
         <ProgressBar
@@ -81,6 +81,7 @@
                         android:background="@drawable/shape_search_bar"
                         android:gravity="center"
                         android:minHeight="48dp"
+                        android:onClick="@{()->viewModel.onSearchBarClicked()}"
                         android:orientation="horizontal">
 
                         <androidx.appcompat.widget.AppCompatTextView

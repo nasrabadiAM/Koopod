@@ -45,6 +45,13 @@ class PodcastListViewModel @ViewModelInject constructor(
             _navigation.emit(PodcastListFragmentDirections.toPodCastDetail(item.id))
         }
     }
+
+    fun onSearchBarClicked() {
+        viewModelScope.launch {
+            _navigation.emit(PodcastListFragmentDirections.toSearch())
+        }
+    }
+
 }
 
 data class PodcastItem(val id: String, val name: String, val image: String, val description: String)

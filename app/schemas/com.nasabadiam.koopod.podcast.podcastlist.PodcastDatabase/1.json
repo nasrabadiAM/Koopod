@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "532787a326215665809451e09b2ba35d",
+    "identityHash": "800156630374e18b770308e17a50d40c",
     "entities": [
       {
         "tableName": "podcast",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `rss_link` TEXT NOT NULL, `link` TEXT NOT NULL, `release_date` INTEGER NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `summary` TEXT NOT NULL, `image` TEXT NOT NULL, `keywords` TEXT NOT NULL, `type` TEXT NOT NULL, `language` TEXT NOT NULL, `category` TEXT NOT NULL, `description` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `rss_link` TEXT NOT NULL, `link` TEXT NOT NULL, `release_date` INTEGER NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `summary` TEXT NOT NULL, `image` TEXT NOT NULL, `keywords` TEXT NOT NULL, `type` TEXT NOT NULL, `language` TEXT NOT NULL, `category` TEXT NOT NULL, `description` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -88,15 +88,17 @@
           }
         ],
         "primaryKey": {
-          "columnNames": [],
-          "autoGenerate": false
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "episode",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `guid` TEXT NOT NULL, `podcast_id` TEXT NOT NULL, `title` TEXT NOT NULL, `release_date` INTEGER NOT NULL, `sub_title` TEXT NOT NULL, `author` TEXT NOT NULL, `summary` TEXT NOT NULL, `image` TEXT NOT NULL, `keywords` TEXT NOT NULL, `type` TEXT NOT NULL, `duration` INTEGER NOT NULL, `category` TEXT NOT NULL, `description` TEXT NOT NULL, `season_id` INTEGER NOT NULL, `episode_id` INTEGER NOT NULL, `played_duration` INTEGER NOT NULL, `download_status` INTEGER NOT NULL, `play_status` INTEGER NOT NULL, `download_url` TEXT NOT NULL, `stream_url` TEXT NOT NULL, `downloaded_file` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `guid` TEXT NOT NULL, `podcast_id` TEXT NOT NULL, `title` TEXT NOT NULL, `release_date` INTEGER NOT NULL, `sub_title` TEXT NOT NULL, `author` TEXT NOT NULL, `summary` TEXT NOT NULL, `image` TEXT NOT NULL, `keywords` TEXT NOT NULL, `type` TEXT NOT NULL, `duration` INTEGER NOT NULL, `category` TEXT NOT NULL, `description` TEXT NOT NULL, `season_id` INTEGER NOT NULL, `episode_id` INTEGER NOT NULL, `played_duration` INTEGER NOT NULL, `download_status` INTEGER NOT NULL, `play_status` INTEGER NOT NULL, `download_url` TEXT NOT NULL, `stream_url` TEXT NOT NULL, `downloaded_file` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -232,8 +234,10 @@
           }
         ],
         "primaryKey": {
-          "columnNames": [],
-          "autoGenerate": false
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -242,7 +246,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '532787a326215665809451e09b2ba35d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '800156630374e18b770308e17a50d40c')"
     ]
   }
 }

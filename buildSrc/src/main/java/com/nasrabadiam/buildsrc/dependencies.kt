@@ -72,6 +72,15 @@ object Libs {
             const val viewBinding = "androidx.compose.ui:ui-viewbinding:$version"
         }
 
+        object Room {
+            private const val version = "2.2.6"
+
+            const val runtime = "androidx.room:room-runtime:$version"
+            const val compiler = "androidx.room:room-compiler:$version"
+
+            const val coroutineExt = "androidx.room:room-ktx:$version"
+        }
+
         object Navigation {
             private const val version = "2.3.2"
             const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"

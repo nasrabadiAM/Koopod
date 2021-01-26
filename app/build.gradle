@@ -79,6 +79,10 @@ dependencies {
     kapt Libs.Di.hiltCompiler
     kapt Libs.Di.daggerHiltCompiler
 
+    implementation Libs.AndroidX.Room.runtime
+    implementation Libs.AndroidX.Room.coroutineExt
+    kapt Libs.AndroidX.Room.compiler
+
     androidTestImplementation Libs.junit
     androidTestImplementation Libs.AndroidX.Test.core
     androidTestImplementation Libs.AndroidX.Test.espressoCore

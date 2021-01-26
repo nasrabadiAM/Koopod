@@ -19,6 +19,15 @@ android {
         versionName "0.0.0-alpha"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"]
+            }
+        }
     }
 
     composeOptions {
@@ -66,7 +75,9 @@ dependencies {
     implementation Libs.Accompanist.insets
 
     implementation Libs.Di.hilt
+    implementation Libs.Di.lifecycle
     kapt Libs.Di.hiltCompiler
+    kapt Libs.Di.daggerHiltCompiler
 
     androidTestImplementation Libs.junit
     androidTestImplementation Libs.AndroidX.Test.core

@@ -21,8 +21,13 @@ object Libs {
 
     object Di {
         private const val version = "2.28-alpha"
+        private const val androidXVersion = "1.0.0-alpha01"
         const val hilt = "com.google.dagger:hilt-android:$version"
-        const val hiltCompiler = "com.google.dagger:hilt-android-compiler:$version"
+        const val lifecycle =  "androidx.hilt:hilt-lifecycle-viewmodel:$androidXVersion"
+
+        const val daggerHiltCompiler = "com.google.dagger:hilt-android-compiler:$version"
+        const val hiltCompiler = "androidx.hilt:hilt-compiler:$androidXVersion"
+
         const val daggerPlugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
     }
 

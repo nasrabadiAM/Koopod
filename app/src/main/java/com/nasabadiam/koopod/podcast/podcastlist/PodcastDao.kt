@@ -4,17 +4,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PodcastDao {
     @Transaction
     @Query("SELECT * FROM podcast")
-    suspend fun podcasts(): StateFlow<PodcastEntity>
+    fun podcasts(): Flow<List<PodcastEntity>>
 
     @Transaction
     @Query("SELECT * FROM episode")
-    suspend fun episodes(): StateFlow<EpisodeEntity>
+    fun episodes(): Flow<List<EpisodeEntity>>
 
     @Insert
     suspend fun insertPodcast(podcast: PodcastEntity)

@@ -10,7 +10,8 @@ buildscript {
     dependencies {
         classpath Libs.androidGradlePlugin
         classpath Libs.Kotlin.gradlePlugin
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath Libs.Di.daggerPlugin
+        classpath Libs.AndroidX.Navigation.safeArgs
     }
 }
 

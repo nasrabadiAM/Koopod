@@ -23,6 +23,7 @@ object Libs {
         private const val version = "2.28-alpha"
         const val hilt = "com.google.dagger:hilt-android:$version"
         const val hiltCompiler = "com.google.dagger:hilt-android-compiler:$version"
+        const val daggerPlugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
     }
 
     object Coroutines {
@@ -37,9 +38,16 @@ object Libs {
         const val insets = "dev.chrisbanes.accompanist:accompanist-insets:$version"
     }
 
+    object Glide {
+        private const val version = "4.11.0"
+        const val core = "com.github.bumptech.glide:glide:$version"
+        const val compiler = "com.github.bumptech.glide:compiler:$version"
+    }
+
     object AndroidX {
         const val appcompat = "androidx.appcompat:appcompat:1.2.0-rc01"
         const val coreKtx = "androidx.core:core-ktx:1.5.0-beta01"
+        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.4"
 
         object Compose {
             const val snapshot = ""
@@ -63,6 +71,7 @@ object Libs {
             private const val version = "2.3.2"
             const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
             const val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
+            const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
         }
 
         object Test {

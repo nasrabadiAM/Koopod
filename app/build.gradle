@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -56,6 +57,9 @@ dependencies {
 
     implementation Libs.AndroidX.Navigation.fragment
     implementation Libs.AndroidX.Navigation.uiKtx
+
+    implementation Libs.Glide.core
+    kapt Libs.Glide.compiler
 
     implementation Libs.material
 

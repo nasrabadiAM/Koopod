@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.nasabadiam.koopod.ui.main.PodcastListViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            app:contentVisibility="@{viewModel.state}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@{viewModel.message}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:messageVisibility="@{viewModel.state}"
+            tools:text="پیام متنی در وسط صفحه که به کاربر نمایش داده می‌شود تا وضعیت خالی صفحه برای او قابل فهم باشد" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:loadingVisibility="@{viewModel.state}" />
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:elevation="0dp">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/colorSurface"
+                app:layout_scrollFlags="snap|scroll|enterAlways|enterAlwaysCollapsed"
+                app:scrimAnimationDuration="200">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorSurface"
+                    android:minHeight="?attr/actionBarSize"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    app:contentInsetStart="0dp"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+
+                    <LinearLayout
+                        android:id="@+id/searchBarContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_search_bar"
+                        android:gravity="center"
+                        android:minHeight="48dp"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/searchHint"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:hint="@string/search_bar_hint"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            tools:text=" جای سرچ در بالای صفحه" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/searchIcon"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            app:srcCompat="@drawable/ic_round_search_24" />
+                    </LinearLayout>
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

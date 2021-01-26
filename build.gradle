@@ -6,7 +6,6 @@ buildscript {
         jcenter()
     }
 
-    ext.hilt_version = '2.28-alpha'
     dependencies {
         classpath Libs.androidGradlePlugin
         classpath Libs.Kotlin.gradlePlugin

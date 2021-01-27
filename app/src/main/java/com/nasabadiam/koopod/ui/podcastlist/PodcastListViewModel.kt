@@ -6,6 +6,7 @@ import androidx.navigation.NavDirections
 import com.nasabadiam.koopod.R
 import com.nasabadiam.koopod.ResourceState
 import com.nasabadiam.koopod.podcast.podcastlist.PodcastLocalDataSource
+import com.nasabadiam.koopod.podcast.podcastlist.PodcastModel
 import com.nasabadiam.koopod.utils.BaseViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -34,7 +35,7 @@ class PodcastListViewModel @ViewModelInject constructor(
                     _message.emit(R.string.empty_message)
                 } else {
                     _state.emit(ResourceState.Success)
-                    _data.emit(it.map { item -> item.toPodcastItem() })
+                    _data.emit(it.map { item -> PodcastItem.fromModel(item) })
                 }
             }
         }
@@ -54,4 +55,15 @@ class PodcastListViewModel @ViewModelInject constructor(
 
 }
 
-data class PodcastItem(val id: String, val name: String, val image: String, val description: String)
+data class PodcastItem(
+    val id: String,
+    val name: String,
+    val image: String,
+    val description: String
+) {
+    companion object {
+        fun fromModel(model: PodcastModel): PodcastItem = with(model) {
+            PodcastItem(id, name, image, description)
+        }
+    }
+}

@@ -3,7 +3,6 @@ package com.nasabadiam.koopod.podcast.podcastlist
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.nasabadiam.koopod.ui.podcastlist.PodcastItem
 
 @Entity(tableName = "podcast")
 data class PodcastEntity(
@@ -21,7 +20,8 @@ data class PodcastEntity(
     @ColumnInfo(name = "category") var category: String = "",
     @ColumnInfo(name = "description") var description: String = ""
 ) {
-    fun toPodcastItem(): PodcastItem {
-        return PodcastItem(id.toString(), title, image, description)
+
+    fun toPodcastModel(): PodcastModel {
+        return PodcastModel(id.toString(), title, image, description)
     }
 }

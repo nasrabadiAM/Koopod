@@ -83,6 +83,11 @@ dependencies {
     implementation Libs.AndroidX.Room.coroutineExt
     kapt Libs.AndroidX.Room.compiler
 
+    implementation Libs.Retrofit.retrofit
+    implementation Libs.Retrofit.gson
+    implementation Libs.Retrofit.gsonConverter
+    implementation Libs.Retrofit.loggingInterceptor
+
     androidTestImplementation Libs.junit
     androidTestImplementation Libs.AndroidX.Test.core
     androidTestImplementation Libs.AndroidX.Test.espressoCore

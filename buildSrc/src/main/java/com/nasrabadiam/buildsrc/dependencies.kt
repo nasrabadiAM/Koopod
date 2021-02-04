@@ -23,7 +23,7 @@ object Libs {
         private const val version = "2.28-alpha"
         private const val androidXVersion = "1.0.0-alpha01"
         const val hilt = "com.google.dagger:hilt-android:$version"
-        const val lifecycle =  "androidx.hilt:hilt-lifecycle-viewmodel:$androidXVersion"
+        const val lifecycle = "androidx.hilt:hilt-lifecycle-viewmodel:$androidXVersion"
 
         const val daggerHiltCompiler = "com.google.dagger:hilt-android-compiler:$version"
         const val hiltCompiler = "androidx.hilt:hilt-compiler:$androidXVersion"
@@ -47,6 +47,13 @@ object Libs {
         private const val version = "4.11.0"
         const val core = "com.github.bumptech.glide:glide:$version"
         const val compiler = "com.github.bumptech.glide:compiler:$version"
+    }
+
+    object Retrofit {
+        const val retrofit = "com.squareup.retrofit2:retrofit:2.6.0"
+        const val gson = "com.google.code.gson:gson:2.8.5"
+        const val gsonConverter = "com.squareup.retrofit2:converter-gson:2.5.0"
+        const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:3.12.0"
     }
 
     object AndroidX {

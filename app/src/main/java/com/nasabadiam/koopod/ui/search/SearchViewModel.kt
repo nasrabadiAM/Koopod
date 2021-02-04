@@ -5,13 +5,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.nasabadiam.koopod.R
 import com.nasabadiam.koopod.ResourceState
+import com.nasabadiam.koopod.podcast.podcastlist.PodcastModel
+import com.nasabadiam.koopod.podcast.podcastlist.Result
+import com.nasabadiam.koopod.ui.MessageHandler
 import com.nasabadiam.koopod.ui.podcastlist.PodcastItem
 import com.nasabadiam.koopod.utils.BaseViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class SearchViewModel @ViewModelInject constructor(
-    private val searchRemoteDataSource: SearchRemoteDataSource
+    private val searchRemoteDataSource: SearchRemoteDataSource,
+    private val errorMessageHandler: MessageHandler
 ) : BaseViewModel() {
 
     private var latestQuery: String? = null
@@ -46,24 +50,36 @@ class SearchViewModel @ViewModelInject constructor(
                     _state.emit(ResourceState.SuccessEmpty)
                     _message.emit(R.string.empty_search_query)
                 }
-                query == latestQuery -> {
+                query == latestQuery && state.value != ResourceState.Failed -> {
                     return@launch
                 }
                 else -> {
                     _state.emit(ResourceState.Loading)
                     searchRemoteDataSource.search(query).collect {
-                        if (it.isEmpty()) {
-                            _state.emit(ResourceState.SuccessEmpty)
-                            _message.emit(R.string.empty_search_message)
-                        } else {
-                            _state.emit(ResourceState.Success)
-                            _data.emit(it.map { model -> PodcastItem.fromModel(model) })
-                        }
+                        handleResult(it)
                     }
                 }
             }
         }
         latestQuery = query
+    }
+
+    private suspend fun handleResult(it: Result<List<PodcastModel>>) {
+        when (it) {
+            is Result.Success -> {
+                if (it.data.isEmpty()) {
+                    _state.emit(ResourceState.SuccessEmpty)
+                    _message.emit(R.string.empty_search_message)
+                } else {
+                    _state.emit(ResourceState.Success)
+                    _data.emit(it.data.map { model -> PodcastItem.fromModel(model) })
+                }
+            }
+            is Result.Error -> {
+                _state.emit(ResourceState.Failed)
+                _message.emit(errorMessageHandler.handle(it.error))
+            }
+        }
     }
 
     fun onPodcastItemClicked(item: PodcastItem) {

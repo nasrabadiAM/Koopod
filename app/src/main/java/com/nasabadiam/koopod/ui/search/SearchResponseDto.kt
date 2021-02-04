@@ -7,7 +7,7 @@ data class SearchResponseDto(
     @SerializedName("resultCount") val resultCount: String,
     @SerializedName("results") val results: List<SearchPodcastDto>
 ) {
-    fun toItems(): List<PodcastModel> {
+    fun toPodcastModel(): List<PodcastModel> {
         return results.mapNotNull { it.toPodcastModel() }
     }
 }

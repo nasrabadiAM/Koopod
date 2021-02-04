@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.nasabadiam.koopod.BuildConfig
 import com.nasabadiam.koopod.podcast.podcastlist.PodcastDatabase
 import com.nasabadiam.koopod.podcast.podcastlist.PodcastLocalDataSource
+import com.nasabadiam.koopod.ui.GeneralMessageHandler
+import com.nasabadiam.koopod.ui.MessageHandler
 import com.nasabadiam.koopod.ui.search.SearchRemoteDataSource
 import com.nasabadiam.koopod.ui.search.SearchService
 import dagger.Module
@@ -12,6 +14,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -78,8 +81,18 @@ object AppModule {
     @Provides
     @Singleton
     fun bindSearchRemoteDataSource(
-        searchApiService: SearchService
+        searchApiService: SearchService,
+        iODispatcher: CoroutineDispatcher
     ): SearchRemoteDataSource {
-        return SearchRemoteDataSource(searchApiService)
+        return SearchRemoteDataSource(
+            searchApiService,
+            iODispatcher
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun bindGeneralErrorMessageHandler(): MessageHandler {
+        return GeneralMessageHandler()
     }
 }

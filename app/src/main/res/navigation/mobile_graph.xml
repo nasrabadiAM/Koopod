@@ -9,13 +9,13 @@
         android:name="com.nasabadiam.koopod.ui.podcastlist.PodcastListFragment"
         android:label="PodcastListFragment">
         <argument
-            android:name="id"
+            android:name="rssLink"
             app:argType="string" />
         <action
             android:id="@+id/toPodCastDetail"
             app:destination="@+id/podcastDetailFragment">
             <argument
-                android:name="id"
+                android:name="rssLink"
                 app:argType="string" />
         </action>
         <action

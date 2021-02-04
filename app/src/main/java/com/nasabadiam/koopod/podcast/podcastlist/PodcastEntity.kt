@@ -22,6 +22,12 @@ data class PodcastEntity(
 ) {
 
     fun toPodcastModel(): PodcastModel {
-        return PodcastModel(id.toString(), title, image, description)
+        return PodcastModel(
+            rssLink = rssLink,
+            title = title,
+            author = author,
+            description = description,
+            image = image
+        )
     }
 }

@@ -43,7 +43,7 @@ class PodcastListViewModel @ViewModelInject constructor(
 
     fun onPodcastItemClicked(item: PodcastItem) {
         viewModelScope.launch {
-            _navigation.emit(PodcastListFragmentDirections.toPodCastDetail(item.id))
+            _navigation.emit(PodcastListFragmentDirections.toPodCastDetail(item.rssLink))
         }
     }
 
@@ -56,14 +56,30 @@ class PodcastListViewModel @ViewModelInject constructor(
 }
 
 data class PodcastItem(
-    val id: String,
-    val name: String,
+    val rssLink: String,
+    val title: String,
     val image: String,
+    val author: String,
     val description: String
 ) {
+
+    fun toPodcastModel() = PodcastModel(
+        rssLink = rssLink,
+        title = title,
+        image = image,
+        author = author,
+        description = description
+    )
+
     companion object {
         fun fromModel(model: PodcastModel): PodcastItem = with(model) {
-            PodcastItem(id, name, image, description)
+            PodcastItem(
+                rssLink = rssLink,
+                title = title,
+                image = image,
+                author = author,
+                description = description
+            )
         }
     }
 }

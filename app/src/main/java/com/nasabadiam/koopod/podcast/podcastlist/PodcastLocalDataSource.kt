@@ -1,6 +1,5 @@
 package com.nasabadiam.koopod.podcast.podcastlist
 
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

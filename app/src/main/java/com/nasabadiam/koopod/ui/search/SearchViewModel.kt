@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class SearchViewModel @ViewModelInject constructor(
-    private val searchRemoteDataSource: SearchRemoteDataSource,
+    private val searchRepository: SearchRepository,
     private val podcastRepository: PodcastRepository,
     private val errorMessageHandler: MessageHandler
 ) : BaseViewModel() {
@@ -62,7 +62,7 @@ class SearchViewModel @ViewModelInject constructor(
                 }
                 else -> {
                     _state.emit(ResourceState.Loading)
-                    searchRemoteDataSource.search(query).collect {
+                    searchRepository.search(query).collect {
                         handleResult(it)
                     }
                 }

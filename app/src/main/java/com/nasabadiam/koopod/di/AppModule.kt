@@ -8,6 +8,7 @@ import com.nasabadiam.koopod.podcast.podcastlist.*
 import com.nasabadiam.koopod.ui.GeneralMessageHandler
 import com.nasabadiam.koopod.ui.MessageHandler
 import com.nasabadiam.koopod.ui.search.SearchRemoteDataSource
+import com.nasabadiam.koopod.ui.search.SearchRepository
 import com.nasabadiam.koopod.ui.search.SearchService
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
@@ -153,5 +154,14 @@ object AppModule {
         rssRemoteDataSource: RssRemoteDataSource
     ): PodcastRepository {
         return PodcastRepository(podcastLocalDataSource, rssRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun bindSearchRepository(
+        podcastLocalDataSource: PodcastLocalDataSource,
+        searchRemoteDataSource: SearchRemoteDataSource
+    ): SearchRepository {
+        return SearchRepository(podcastLocalDataSource, searchRemoteDataSource)
     }
 }

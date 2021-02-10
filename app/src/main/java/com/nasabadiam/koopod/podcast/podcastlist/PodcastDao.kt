@@ -13,6 +13,10 @@ interface PodcastDao {
     fun podcasts(): Flow<List<PodcastEntity>>
 
     @Transaction
+    @Query("SELECT * FROM podcast")
+    suspend fun podcastsList(): List<PodcastEntity>
+
+    @Transaction
     @Query("SELECT * FROM episode")
     fun episodes(): Flow<List<EpisodeEntity>>
 

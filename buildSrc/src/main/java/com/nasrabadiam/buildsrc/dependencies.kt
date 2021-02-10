@@ -50,10 +50,25 @@ object Libs {
     }
 
     object Retrofit {
-        const val retrofit = "com.squareup.retrofit2:retrofit:2.6.0"
+        const val retrofit = "com.squareup.retrofit2:retrofit:2.7.2"
         const val gson = "com.google.code.gson:gson:2.8.5"
         const val gsonConverter = "com.squareup.retrofit2:converter-gson:2.5.0"
         const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:3.12.0"
+
+        object XmlConverter {
+            private const val tikXmlVersion = "0.8.13"
+            const val retrofit = "com.tickaroo.tikxml:retrofit-converter:$tikXmlVersion"
+
+            const val annotation = "com.tickaroo.tikxml:annotation:$tikXmlVersion"
+            const val core = "com.tickaroo.tikxml:core:$tikXmlVersion"
+            const val annotationProcessor = "com.tickaroo.tikxml:processor:$tikXmlVersion"
+        }
+
+        object Chucker {
+            private const val version = "3.4.0"
+            const val debug = "com.github.chuckerteam.chucker:library:$version"
+            const val release = "com.github.chuckerteam.chucker:library-no-op:$version"
+        }
     }
 
     object AndroidX {

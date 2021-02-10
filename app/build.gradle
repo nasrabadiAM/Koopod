@@ -88,6 +88,14 @@ dependencies {
     implementation Libs.Retrofit.gsonConverter
     implementation Libs.Retrofit.loggingInterceptor
 
+    implementation Libs.Retrofit.XmlConverter.retrofit
+    implementation Libs.Retrofit.XmlConverter.annotation
+    implementation Libs.Retrofit.XmlConverter.core
+    kapt Libs.Retrofit.XmlConverter.annotationProcessor
+
+    debugImplementation Libs.Retrofit.Chucker.debug
+    releaseImplementation Libs.Retrofit.Chucker.release
+
     androidTestImplementation Libs.junit
     androidTestImplementation Libs.AndroidX.Test.core
     androidTestImplementation Libs.AndroidX.Test.espressoCore

@@ -15,13 +15,13 @@ suspend fun <T, R> safeApiCall(
             Result.Success(map(apiCall.invoke()))
         } catch (throwable: Throwable) {
             when (throwable) {
-                is IOException -> Result.Error(ErrorModel.Network)
+                is IOException -> Result.Error(ErrorModel.Network(throwable))
                 is HttpException -> {
                     val code = throwable.code()
-                    Result.Error(ErrorModel.Http(code))
+                    Result.Error(ErrorModel.Http(code, throwable))
                 }
                 else -> {
-                    Result.Error(ErrorModel.Unknown)
+                    Result.Error(ErrorModel.Unknown(throwable))
                 }
             }
         }

@@ -12,6 +12,7 @@ import com.nasabadiam.koopod.databinding.FragmentSearchBinding
 import com.nasabadiam.koopod.utils.collectAsState
 import com.nasabadiam.koopod.utils.hideKeyboard
 import com.nasabadiam.koopod.utils.openKeyboard
+import com.nasabadiam.koopod.utils.showPopupMessage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,6 +63,12 @@ class SearchFragment : Fragment() {
                     viewBinding.searchEditText.hideKeyboard()
                 }
             }
+        }
+        collectAsState(viewModel.notifyItem) { (index, payload) ->
+            viewBinding.recyclerView.adapter?.notifyItemChanged(index, payload)
+        }
+        collectAsState(viewModel.popupMessage) { messageId ->
+            messageId?.let { showPopupMessage(requireContext().getString(it)) }
         }
     }
 }

@@ -6,15 +6,16 @@ import androidx.navigation.NavDirections
 import com.nasabadiam.koopod.R
 import com.nasabadiam.koopod.ResourceState
 import com.nasabadiam.koopod.podcast.podcastlist.PodcastModel
+import com.nasabadiam.koopod.podcast.podcastlist.PodcastRepository
 import com.nasabadiam.koopod.podcast.podcastlist.Result
 import com.nasabadiam.koopod.ui.MessageHandler
-import com.nasabadiam.koopod.ui.podcastlist.PodcastItem
 import com.nasabadiam.koopod.utils.BaseViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class SearchViewModel @ViewModelInject constructor(
     private val searchRemoteDataSource: SearchRemoteDataSource,
+    private val podcastRepository: PodcastRepository,
     private val errorMessageHandler: MessageHandler
 ) : BaseViewModel() {
 
@@ -23,8 +24,11 @@ class SearchViewModel @ViewModelInject constructor(
     private val _state = MutableStateFlow<ResourceState>(ResourceState.SuccessEmpty)
     val state: StateFlow<ResourceState> = _state
 
-    private val _data = MutableStateFlow<List<PodcastItem>>(listOf())
-    val data: StateFlow<List<PodcastItem>> = _data
+    private val _data = MutableStateFlow<List<SearchPodcastItem>>(listOf())
+    val data: StateFlow<List<SearchPodcastItem>> = _data
+
+    private val _notifyItem = MutableSharedFlow<Pair<Int, Any?>>()
+    val notifyItem: SharedFlow<Pair<Int, Any?>> = _notifyItem
 
     private val _navigation = MutableSharedFlow<NavDirections?>()
     val navigation: SharedFlow<NavDirections?> = _navigation
@@ -34,6 +38,9 @@ class SearchViewModel @ViewModelInject constructor(
 
     private val _message = MutableStateFlow<Int?>(null)
     val message: StateFlow<Int?> = _message
+
+    private val _popupMessage = MutableSharedFlow<Int?>()
+    val popupMessage: SharedFlow<Int?> = _popupMessage
 
     init {
         viewModelScope.launch {
@@ -72,7 +79,7 @@ class SearchViewModel @ViewModelInject constructor(
                     _message.emit(R.string.empty_search_message)
                 } else {
                     _state.emit(ResourceState.Success)
-                    _data.emit(it.data.map { model -> PodcastItem.fromModel(model) })
+                    _data.emit(it.data.map { model -> SearchPodcastItem.fromModel(model) })
                 }
             }
             is Result.Error -> {
@@ -82,9 +89,88 @@ class SearchViewModel @ViewModelInject constructor(
         }
     }
 
-    fun onPodcastItemClicked(item: PodcastItem) {
+    fun onPodcastItemClicked(item: SearchPodcastItem) {
         // TODO("Not yet implemented")
     }
+
+    fun onSubscribePodcastClicked(item: SearchPodcastItem) {
+        viewModelScope.launch {
+            val index = _data.value.indexOf(item)
+            _data.value[index].isLoading = true
+            _notifyItem.emit(
+                index to SearchPodcastItem.LoadingPayLoad(
+                    isLoading = true,
+                    isSubscribed = false
+                )
+            )
+
+            val result = podcastRepository.subscribeToPodcast(item.toPodcastModel())
+            when (result) {
+                is Result.Success -> {
+                    _data.value[index].isLoading = false
+                    _data.value[index].isSubscribed = true
+                    _notifyItem.emit(
+                        index to SearchPodcastItem.LoadingPayLoad(
+                            isLoading = false,
+                            isSubscribed = true
+                        )
+                    )
+                    _popupMessage.emit(R.string.podcast_successfully_added)
+                }
+                is Result.Error -> {
+                    _data.value[index].isLoading = false
+                    _data.value[index].isSubscribed = false
+                    _notifyItem.emit(
+                        index to SearchPodcastItem.LoadingPayLoad(
+                            isLoading = false,
+                            isSubscribed = false
+                        )
+                    )
+                    _popupMessage.emit(errorMessageHandler.handle(result.error))
+                }
+            }
+        }
+    }
+}
+
+data class SearchPodcastItem(
+    val rssLink: String,
+    val title: String,
+    val image: String,
+    val author: String,
+    val description: String
+) {
+
+    var isLoading: Boolean = false
+    var isSubscribed: Boolean = false
+
+    fun canSubscribe(): Boolean {
+        return !isLoading && !isSubscribed
+    }
+
+    fun toPodcastModel() = PodcastModel(
+        rssLink = rssLink,
+        title = title,
+        image = image,
+        author = author,
+        description = description
+    )
+
+    companion object {
+        fun fromModel(model: PodcastModel): SearchPodcastItem = with(model) {
+            SearchPodcastItem(
+                rssLink = rssLink,
+                title = title,
+                image = image,
+                author = author,
+                description = description
+            ).apply {
+                isSubscribed = model.isSubscribed
+            }
+        }
+    }
+
+    data class LoadingPayLoad(val isLoading: Boolean, val isSubscribed: Boolean)
 }
 
 enum class KeyboardEvent {

@@ -5,14 +5,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.nasabadiam.koopod.R
 import com.nasabadiam.koopod.ResourceState
-import com.nasabadiam.koopod.podcast.podcastlist.PodcastLocalDataSource
 import com.nasabadiam.koopod.podcast.podcastlist.PodcastModel
+import com.nasabadiam.koopod.podcast.podcastlist.PodcastRepository
+import com.nasabadiam.koopod.podcast.podcastlist.Result
+import com.nasabadiam.koopod.ui.MessageHandler
 import com.nasabadiam.koopod.utils.BaseViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class PodcastListViewModel @ViewModelInject constructor(
-    private val podcastLocalDataSource: PodcastLocalDataSource
+    private val podcastRepository: PodcastRepository,
+    private val messageHandler: MessageHandler
 ) : BaseViewModel() {
 
     private val _state = MutableStateFlow<ResourceState>(ResourceState.Loading)
@@ -29,14 +32,23 @@ class PodcastListViewModel @ViewModelInject constructor(
 
     fun onViewCreated() {
         viewModelScope.launch {
-            podcastLocalDataSource.getPodcasts().collect {
-                if (it.isEmpty()) {
-                    _state.emit(ResourceState.SuccessEmpty)
-                    _message.emit(R.string.empty_message)
-                } else {
-                    _state.emit(ResourceState.Success)
-                    _data.emit(it.map { item -> PodcastItem.fromModel(item) })
+            podcastRepository.getPodcasts().collect {
+                when (it) {
+                    is Result.Success -> {
+                        if (it.data.isEmpty()) {
+                            _state.emit(ResourceState.SuccessEmpty)
+                            _message.emit(R.string.empty_message)
+                        } else {
+                            _state.emit(ResourceState.Success)
+                            _data.emit(it.data.map { item -> PodcastItem.fromModel(item) })
+                        }
+                    }
+                    is Result.Error -> {
+                        _state.emit(ResourceState.Failed)
+                        _message.emit(messageHandler.handle(it.error))
+                    }
                 }
+
             }
         }
     }

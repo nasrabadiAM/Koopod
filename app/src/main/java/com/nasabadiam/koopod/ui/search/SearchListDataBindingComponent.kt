@@ -3,9 +3,6 @@ package com.nasabadiam.koopod.ui.search
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.nasabadiam.koopod.ui.podcastlist.PodcastItem
-import com.nasabadiam.koopod.ui.podcastlist.PodcastItemClickListener
-import com.nasabadiam.koopod.ui.podcastlist.PodcastListAdapter
 
 class SearchListDataBindingComponent {
 
@@ -14,11 +11,11 @@ class SearchListDataBindingComponent {
         @JvmStatic
         fun bindSearchPodcastItems(
             recyclerView: RecyclerView,
-            podcasts: List<PodcastItem>?,
+            podcasts: List<SearchPodcastItem>?,
             viewModel: SearchViewModel
         ) {
             podcasts?.let {
-                val adapter = PodcastListAdapter()
+                val adapter = SearchListAdapter()
                 recyclerView.adapter = adapter
                 recyclerView.layoutManager = LinearLayoutManager(
                     recyclerView.context,
@@ -27,8 +24,12 @@ class SearchListDataBindingComponent {
                 )
                 adapter.items = podcasts
                 adapter.onItemClickListener = object : PodcastItemClickListener {
-                    override fun onItemClick(item: PodcastItem) {
+                    override fun onItemClick(item: SearchPodcastItem) {
                         viewModel.onPodcastItemClicked(item)
+                    }
+
+                    override fun onSubscribeClick(item: SearchPodcastItem) {
+                        viewModel.onSubscribePodcastClicked(item)
                     }
                 }
             }

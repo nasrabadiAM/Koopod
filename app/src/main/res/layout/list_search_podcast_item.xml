@@ -7,11 +7,11 @@
 
         <variable
             name="itemData"
-            type="com.nasabadiam.koopod.ui.podcastlist.PodcastItem" />
+            type="com.nasabadiam.koopod.ui.search.SearchPodcastItem" />
 
         <variable
             name="itemClick"
-            type="com.nasabadiam.koopod.ui.podcastlist.PodcastItemClickListener" />
+            type="com.nasabadiam.koopod.ui.search.PodcastItemClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,15 +31,44 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_round_search_24" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/add"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="16dp"
+            android:onClick="@{()->itemClick.onSubscribeClick(itemData)}"
+            app:layout_constraintBottom_toTopOf="@id/barrier"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:loadingVisibility="@{itemData.canSubscribe()}"
+            app:srcCompat="@drawable/ic_round_add_24" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="16dp"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toTopOf="@id/barrier"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:loadingVisibility="@{itemData.isLoading}" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/addBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="start"
+            app:constraint_referenced_ids="add,progressBar" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/name"
-            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@{itemData.title}"
             app:layout_constraintBottom_toTopOf="@+id/description"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/addBarrier"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toTopOf="parent"
@@ -48,18 +77,17 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/description"
-            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@{itemData.description}"
             app:layout_constraintBottom_toTopOf="@id/barrier"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/addBarrier"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/name"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:text=" توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست" />
+            tools:text=" توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست  توضیحات پادکست توضیحات پادکست توضیحات پادکست " />
 
         <View
             android:id="@+id/divider"

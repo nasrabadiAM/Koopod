@@ -13,6 +13,16 @@ class DataBindingComponent {
 
         @BindingAdapter("app:loadingVisibility")
         @JvmStatic
+        fun bindLoadingVisibility(view: View, isLoading: Boolean?) {
+            return if (isLoading == true) {
+                view.visibility = View.VISIBLE
+            } else {
+                view.visibility = View.GONE
+            }
+        }
+
+        @BindingAdapter("app:loadingVisibility")
+        @JvmStatic
         fun bindLoadingVisibility(view: View, resource: ResourceState?) {
             return when (resource) {
                 ResourceState.Loading -> view.visibility = View.VISIBLE

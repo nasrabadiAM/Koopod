@@ -27,7 +27,30 @@ data class PodcastEntity(
             title = title,
             author = author,
             description = description,
-            image = image
+            image = image,
+            pubDate = releaseDate.toString(),
+            lastBuildDate = "",
+            link = link,
+            language = language,
+            items = listOf(),
+            managingEditor = ""
         )
+    }
+
+    companion object {
+        fun fromPodcastModel(podcastModel: PodcastModel): PodcastEntity {
+            return with(podcastModel) {
+                PodcastEntity(
+                    rssLink = rssLink,
+                    title = title,
+                    author = author,
+                    description = description,
+                    image = image,
+                    link = link,
+                    language = language
+                )
+            }
+        }
+
     }
 }

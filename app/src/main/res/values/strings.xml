@@ -7,7 +7,8 @@
     <string name="empty_search_message">نتیجه‌ای برای عبارت وارد شده پیدا نشد!</string>
     <string name="empty_search_query">لطفا ابتدا کلمه مورد نظر را نوشته، سپس دکمه جستجو را بفشارید.</string>
     <string name="server_connection_error_message">در برقراری ارتباط مشکلی پیش آمده!</string>
-    <string name="unknown_error_message">در برقراری ارتباط مشکلی پیش آمده!</string>
+    <string name="unknown_error_message"> مشکلی پیش آمده، لطفا دوباره تلاش کنید!</string>
+    <string name="podcast_already_subscribed">این پادکست، همین الان در لیست پادکست‌های شما قرار دارد، نمی‌توانید آن را دوباره اضافه کنید!</string>
     <string name="general_http_error_message">در برقراری ارتباط مشکلی پیش آمده!</string>
     <string name="network_error_message">اتصال اینترنتی خود را بررسی کنید!</string>
     <string name="podcast_successfully_added">"پادکست مورد نظر به لیست پادکست‌های شما اضافه شد. "</string>

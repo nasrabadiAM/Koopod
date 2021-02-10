@@ -1,9 +1,10 @@
 package com.nasabadiam.koopod.podcast.podcastlist
 
-sealed class ErrorModel(throwable: Throwable) {
+sealed class ErrorModel(open val throwable: Throwable) {
 
-    class Server(throwable: Throwable) : ErrorModel(throwable)
-    class Http(code: Int, throwable: Throwable) : ErrorModel(throwable)
-    class Network(throwable: Throwable) : ErrorModel(throwable)
-    class Unknown(throwable: Throwable) : ErrorModel(throwable)
+    class Server(override val throwable: Throwable) : ErrorModel(throwable)
+    class Http(code: Int,override val  throwable: Throwable) : ErrorModel(throwable)
+    class Network(override val throwable: Throwable) : ErrorModel(throwable)
+    class Unknown(override val throwable: Throwable) : ErrorModel(throwable)
+    class Database(override val throwable: Throwable) : ErrorModel(throwable)
 }

@@ -104,30 +104,43 @@ class SearchViewModel @ViewModelInject constructor(
                 )
             )
 
-            val result = podcastRepository.subscribeToPodcast(item.toPodcastModel())
-            when (result) {
-                is Result.Success -> {
-                    _data.value[index].isLoading = false
-                    _data.value[index].isSubscribed = true
-                    _notifyItem.emit(
-                        index to SearchPodcastItem.LoadingPayLoad(
-                            isLoading = false,
-                            isSubscribed = true
+            podcastRepository.subscribeToPodcast(item.toPodcastModel()).collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        _data.value[index].isLoading = false
+                        _data.value[index].isSubscribed = true
+                        _notifyItem.emit(
+                            index to SearchPodcastItem.LoadingPayLoad(
+                                isLoading = false,
+                                isSubscribed = true
+                            )
                         )
-                    )
-                    _popupMessage.emit(R.string.podcast_successfully_added)
+                        _popupMessage.emit(R.string.podcast_successfully_added)
+                    }
+                    is Result.Error -> {
+                        if (result.error.throwable.message == PodcastRepository.DUPLICATE_SUBSCRIBE_ERROR) {
+                            _data.value[index].isLoading = false
+                            _data.value[index].isSubscribed = true
+                            _notifyItem.emit(
+                                index to SearchPodcastItem.LoadingPayLoad(
+                                    isLoading = false,
+                                    isSubscribed = true
+                                )
+                            )
+                        } else {
+                            _data.value[index].isLoading = false
+                            _data.value[index].isSubscribed = false
+                            _notifyItem.emit(
+                                index to SearchPodcastItem.LoadingPayLoad(
+                                    isLoading = false,
+                                    isSubscribed = false
+                                )
+                            )
+                        }
+                        _popupMessage.emit(errorMessageHandler.handle(result.error))
+                    }
                 }
-                is Result.Error -> {
-                    _data.value[index].isLoading = false
-                    _data.value[index].isSubscribed = false
-                    _notifyItem.emit(
-                        index to SearchPodcastItem.LoadingPayLoad(
-                            isLoading = false,
-                            isSubscribed = false
-                        )
-                    )
-                    _popupMessage.emit(errorMessageHandler.handle(result.error))
-                }
+
             }
         }
     }

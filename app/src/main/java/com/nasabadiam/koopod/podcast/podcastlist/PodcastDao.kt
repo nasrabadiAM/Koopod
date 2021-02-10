@@ -22,4 +22,7 @@ interface PodcastDao {
 
     @Insert
     suspend fun insertPodcast(podcast: PodcastEntity)
+
+    @Query("SELECT * FROM podcast where rss_link = :rssLink")
+    suspend fun getPodcast(rssLink: String): PodcastEntity?
 }

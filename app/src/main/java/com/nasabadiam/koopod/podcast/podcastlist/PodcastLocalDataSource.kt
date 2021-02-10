@@ -8,6 +8,9 @@ class PodcastLocalDataSource @Inject constructor(
 
     fun getPodcasts() = podcastDao.podcasts()
 
+    suspend fun getPodcasts(rssLink: String): PodcastModel? =
+        podcastDao.getPodcast(rssLink)?.toPodcastModel()
+
     suspend fun getPodcastsList() = podcastDao.podcastsList().map { it.toPodcastModel() }
 
     suspend fun insertPodcast(podcastModel: PodcastModel) {

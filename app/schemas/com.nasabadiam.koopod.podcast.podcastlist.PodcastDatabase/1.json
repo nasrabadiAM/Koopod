@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "800156630374e18b770308e17a50d40c",
+    "identityHash": "93906976939e78ccc686a4d1b1e0e33d",
     "entities": [
       {
         "tableName": "podcast",
@@ -98,7 +98,7 @@
       },
       {
         "tableName": "episode",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `guid` TEXT NOT NULL, `podcast_id` TEXT NOT NULL, `title` TEXT NOT NULL, `release_date` INTEGER NOT NULL, `sub_title` TEXT NOT NULL, `author` TEXT NOT NULL, `summary` TEXT NOT NULL, `image` TEXT NOT NULL, `keywords` TEXT NOT NULL, `type` TEXT NOT NULL, `duration` INTEGER NOT NULL, `category` TEXT NOT NULL, `description` TEXT NOT NULL, `season_id` INTEGER NOT NULL, `episode_id` INTEGER NOT NULL, `played_duration` INTEGER NOT NULL, `download_status` INTEGER NOT NULL, `play_status` INTEGER NOT NULL, `download_url` TEXT NOT NULL, `stream_url` TEXT NOT NULL, `downloaded_file` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `guid` TEXT NOT NULL, `podcast_id` INTEGER NOT NULL, `title` TEXT NOT NULL, `pub_date` TEXT NOT NULL, `sub_title` TEXT NOT NULL, `author` TEXT NOT NULL, `summary` TEXT NOT NULL, `image` TEXT NOT NULL, `keywords` TEXT NOT NULL, `type` TEXT NOT NULL, `duration` TEXT NOT NULL, `description` TEXT NOT NULL, `season_id` INTEGER NOT NULL, `episode_id` INTEGER NOT NULL, `played_duration` INTEGER NOT NULL, `download_status` INTEGER NOT NULL, `play_status` INTEGER NOT NULL, `download_url` TEXT NOT NULL, `stream_url` TEXT NOT NULL, `downloaded_file` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -115,7 +115,7 @@
           {
             "fieldPath": "podcastId",
             "columnName": "podcast_id",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -125,9 +125,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "releaseDate",
-            "columnName": "release_date",
-            "affinity": "INTEGER",
+            "fieldPath": "pubDate",
+            "columnName": "pub_date",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -169,12 +169,6 @@
           {
             "fieldPath": "duration",
             "columnName": "duration",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "category",
-            "columnName": "category",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -246,7 +240,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '800156630374e18b770308e17a50d40c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '93906976939e78ccc686a4d1b1e0e33d')"
     ]
   }
 }

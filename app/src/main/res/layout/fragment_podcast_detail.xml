@@ -1,12 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.nasabadiam.koopod.ui.podcastdetail.PodcastDetailViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/rootContent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/detail_fragment_title" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior=".utils.FlingBehavior">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="?attr/colorSurface"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+                <FrameLayout
+                    android:id="@+id/fl_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/anim_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:visibility="invisible"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_profile_name_single"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/toolbar_text_margin"
+                    android:ellipsize="end"
+                    android:fontFamily="monospace"
+                    android:gravity="center"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textColor="?attr/colorOnSurface"
+                    android:visibility="invisible"
+                    app:htmlText="@{viewModel.podcastData.title}"
+                    app:layout_collapseMode="pin"
+                    tools:visibility="visible" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_workaround"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/toolbar_text_margin"
+                    android:ellipsize="end"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textColor="?attr/colorOnSurface"
+                    android:visibility="invisible"
+                    app:htmlText="@{viewModel.podcastData.title}"
+                    app:layout_collapseMode="pin"
+                    tools:text="Podcast Title"
+                    tools:visibility="invisible" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_profile_name"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="@dimen/toolbar_text_margin"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="@dimen/toolbar_text_margin"
+                    android:ellipsize="marquee"
+                    android:maxLines="2"
+                    android:scrollHorizontally="true"
+                    android:textColor="?attr/colorOnSurface"
+                    app:htmlText="@{viewModel.podcastData.title}"
+                    tools:text="Podcast Title"
+                    tools:visibility="visible" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/podcastImage"
+                    android:layout_width="@dimen/default_expanded_image_size"
+                    android:layout_height="@dimen/default_expanded_image_size"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:src="@drawable/shape_search_bar"
+                    app:imageUrl="@{viewModel.podcastData.image}" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingStart="8dp"
+            android:paddingTop="@dimen/default_margin_double"
+            android:paddingEnd="8dp"
+            android:paddingBottom="72dp"
+            app:contentVisibility="@{viewModel.state}"
+            app:episodeItems="@{viewModel.data}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:viewModel="@{viewModel}"
+            tools:itemCount="10"
+            tools:listitem="@layout/list_podcast_item" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:messageVisibility="@{viewModel.state}"
+            app:textId="@{viewModel.message}"
+            tools:text="پیام متنی در وسط صفحه که به کاربر نمایش داده می‌شود تا وضعیت خالی صفحه برای او قابل فهم باشد" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:loadingVisibility="@{viewModel.state}" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -32,7 +32,7 @@ class PodcastListViewModel @ViewModelInject constructor(
 
     fun onViewCreated() {
         viewModelScope.launch {
-            podcastRepository.getPodcasts().collect {
+            podcastRepository.podcasts().collect {
                 when (it) {
                     is Result.Success -> {
                         if (it.data.isEmpty()) {

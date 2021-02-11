@@ -6,8 +6,11 @@ import com.tickaroo.tikxml.annotation.*
 data class RssPodcastResponseDto(@Element val channel: RssChannelDto) {
     fun toPodcastModel(): PodcastModel {
         return with(channel) {
+            val rssLink = rssLinks.first {
+                it.type == "application/rss+xml" || it.type == "application/atom+xml"
+            }
             PodcastModel(
-                rssLink = rssLink,
+                rssLink = rssLink.url,
                 title = title,
                 author = author.orEmpty(),
                 image = image?.url.orEmpty(),
@@ -17,7 +20,7 @@ data class RssPodcastResponseDto(@Element val channel: RssChannelDto) {
                 link = link.orEmpty(),
                 language = language,
                 managingEditor = managingEditor.orEmpty(),
-                items = items.mapNotNull { it.toEpisodeModel() },
+                episodes = items.mapNotNull { it.toEpisodeModel() },
                 keywords = keywords?.split(",") ?: listOf(),
                 type = type.orEmpty(),
                 category = category.orEmpty(),
@@ -32,7 +35,7 @@ data class RssPodcastResponseDto(@Element val channel: RssChannelDto) {
 data class RssChannelDto(
     @PropertyElement(name = "title") val title: String,
     @PropertyElement(name = "pubDate") val pubDate: String?,
-    @Path("atom:link") @Attribute(name = "href") val rssLink: String,
+    @Element val rssLinks: List<RssLink>,
     @PropertyElement(name = "lastBuildDate") val lastBuildDate: String?,
     @PropertyElement(name = "link") val link: String?,
     @PropertyElement(name = "language") val language: String,
@@ -45,6 +48,13 @@ data class RssChannelDto(
     @PropertyElement(name = "category") val category: String?,
     @PropertyElement(name = "itunes:summary") val summary: String?,
     @Element val items: List<RssEpisodeDto>
+)
+
+@Xml(name = "atom:link")
+data class RssLink(
+    @Attribute(name = "href") val url: String,
+    @Attribute(name = "type") val type: String?,
+    @Attribute(name = "rel") val rel: String?
 )
 
 @Xml(name = "image")
@@ -69,7 +79,7 @@ data class RssEpisodeDto(
     @PropertyElement(name = "author") val author: String?,
     @PropertyElement(name = "pubDate") val pubDate: String?,
     @PropertyElement(name = "link", writeAsCData = true) val link: String,
-    @Path("itunes:image") @Attribute(name = "href") val image: String,
+    @Path("itunes:image") @Attribute(name = "href") val image: String?,
     @Path("enclosure") @Attribute(name = "url") val downloadUrl: String?,
     @Path("enclosure") @Attribute(name = "type") val downloadFileType: String?,
     @Path("enclosure") @Attribute(name = "length") val downloadFileLengthInByte: String?,
@@ -82,7 +92,7 @@ data class RssEpisodeDto(
                 title = title,
                 pubDate = pubDate.orEmpty(),
                 link = link,
-                image = image,
+                image = image.orEmpty(),
                 description = description.orEmpty(),
                 subTitle = subTitle.orEmpty(),
                 summary = summary.orEmpty(),

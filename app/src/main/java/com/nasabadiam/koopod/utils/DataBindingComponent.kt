@@ -1,5 +1,7 @@
 package com.nasabadiam.koopod.utils
 
+import android.os.Build
+import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,6 +12,17 @@ import com.nasabadiam.koopod.ResourceState
 class DataBindingComponent {
 
     companion object {
+
+        @BindingAdapter("app:visibility")
+        @JvmStatic
+        fun bindVisibility(view: View, input: Any?) {
+            view.visibility = when {
+                input is Boolean -> if (input) View.VISIBLE else View.GONE
+                input is String -> if (input.isEmpty()) View.GONE else View.VISIBLE
+                input != null -> View.VISIBLE
+                else -> View.GONE
+            }
+        }
 
         @BindingAdapter("app:loadingVisibility")
         @JvmStatic
@@ -63,6 +76,18 @@ class DataBindingComponent {
             textId?.let {
                 if (textId == 0) return
                 view.setText(textId)
+            }
+        }
+
+        @BindingAdapter("app:htmlText")
+        @JvmStatic
+        fun bindHtmlText(view: TextView, text: String?) {
+            text?.let {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    view.text = Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
+                } else {
+                    view.text = Html.fromHtml(text)
+                }
             }
         }
     }

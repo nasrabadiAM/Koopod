@@ -7,11 +7,11 @@
 
         <variable
             name="itemData"
-            type="com.nasabadiam.koopod.ui.podcastlist.PodcastItem" />
+            type="com.nasabadiam.koopod.ui.podcastdetail.EpisodeItem" />
 
         <variable
             name="itemClick"
-            type="com.nasabadiam.koopod.ui.podcastlist.PodcastItemClickListener" />
+            type="com.nasabadiam.koopod.ui.podcastdetail.EpisodeItemClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,6 +29,7 @@
             app:layout_constraintBottom_toTopOf="@id/barrier"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:visibility="@{itemData.image}"
             tools:src="@drawable/ic_round_search_24" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -39,12 +40,28 @@
             android:layout_margin="8dp"
             app:htmlText="@{itemData.title}"
             app:layout_constraintBottom_toTopOf="@+id/description"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/number"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="نام پادکست" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/number"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@{itemData.getEpisodeNum()}"
+            app:layout_constraintBottom_toBottomOf="@+id/name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/name"
+            app:layout_constraintTop_toTopOf="@id/name"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:visibility="@{itemData.getEpisodeNum()}"
+            tools:text="1" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/description"

@@ -2,6 +2,7 @@ package com.nasabadiam.koopod.podcast.podcastlist
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "podcast")
@@ -18,7 +19,8 @@ data class PodcastEntity(
     @ColumnInfo(name = "type") var type: String = "",
     @ColumnInfo(name = "language") var language: String = "",
     @ColumnInfo(name = "category") var category: String = "",
-    @ColumnInfo(name = "description") var description: String = ""
+    @ColumnInfo(name = "description") var description: String = "",
+    @Ignore var episodes: List<EpisodeEntity> = listOf()
 ) {
 
     fun toPodcastModel(): PodcastModel {
@@ -32,7 +34,7 @@ data class PodcastEntity(
             lastBuildDate = "",
             link = link,
             language = language,
-            items = listOf(),
+            episodes = episodes.map { it.toEpisodeModel() },
             managingEditor = ""
         )
     }
@@ -47,7 +49,8 @@ data class PodcastEntity(
                     description = description,
                     image = image,
                     link = link,
-                    language = language
+                    language = language,
+                    episodes = episodes.map { EpisodeEntity.fromEpisodeModel(it) }
                 )
             }
         }

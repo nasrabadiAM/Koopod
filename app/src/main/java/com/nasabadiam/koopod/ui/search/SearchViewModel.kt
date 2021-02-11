@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.nasabadiam.koopod.R
 import com.nasabadiam.koopod.ResourceState
+import com.nasabadiam.koopod.podcast.podcastlist.DuplicatePodcastException
 import com.nasabadiam.koopod.podcast.podcastlist.PodcastModel
 import com.nasabadiam.koopod.podcast.podcastlist.PodcastRepository
 import com.nasabadiam.koopod.podcast.podcastlist.Result
@@ -98,36 +99,49 @@ class SearchViewModel @ViewModelInject constructor(
             val index = _data.value.indexOf(item)
             _data.value[index].isLoading = true
             _notifyItem.emit(
-                index to SearchPodcastItem.LoadingPayLoad(
+                index to SearchPodcastItem.SubscribePayLoad(
                     isLoading = true,
                     isSubscribed = false
                 )
             )
 
-            val result = podcastRepository.subscribeToPodcast(item.toPodcastModel())
-            when (result) {
-                is Result.Success -> {
-                    _data.value[index].isLoading = false
-                    _data.value[index].isSubscribed = true
-                    _notifyItem.emit(
-                        index to SearchPodcastItem.LoadingPayLoad(
-                            isLoading = false,
-                            isSubscribed = true
+            podcastRepository.subscribeToPodcast(item.toPodcastModel()).collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        _data.value[index].isLoading = false
+                        _data.value[index].isSubscribed = true
+                        _notifyItem.emit(
+                            index to SearchPodcastItem.SubscribePayLoad(
+                                isLoading = false,
+                                isSubscribed = true
+                            )
                         )
-                    )
-                    _popupMessage.emit(R.string.podcast_successfully_added)
+                        _popupMessage.emit(R.string.podcast_successfully_added)
+                    }
+                    is Result.Error -> {
+                        if (result.error.throwable is DuplicatePodcastException) {
+                            _data.value[index].isLoading = false
+                            _data.value[index].isSubscribed = true
+                            _notifyItem.emit(
+                                index to SearchPodcastItem.SubscribePayLoad(
+                                    isLoading = false,
+                                    isSubscribed = true
+                                )
+                            )
+                        } else {
+                            _data.value[index].isLoading = false
+                            _data.value[index].isSubscribed = false
+                            _notifyItem.emit(
+                                index to SearchPodcastItem.SubscribePayLoad(
+                                    isLoading = false,
+                                    isSubscribed = false
+                                )
+                            )
+                        }
+                        _popupMessage.emit(errorMessageHandler.handle(result.error))
+                    }
                 }
-                is Result.Error -> {
-                    _data.value[index].isLoading = false
-                    _data.value[index].isSubscribed = false
-                    _notifyItem.emit(
-                        index to SearchPodcastItem.LoadingPayLoad(
-                            isLoading = false,
-                            isSubscribed = false
-                        )
-                    )
-                    _popupMessage.emit(errorMessageHandler.handle(result.error))
-                }
+
             }
         }
     }
@@ -170,7 +184,7 @@ data class SearchPodcastItem(
         }
     }
 
-    data class LoadingPayLoad(val isLoading: Boolean, val isSubscribed: Boolean)
+    data class SubscribePayLoad(val isLoading: Boolean, val isSubscribed: Boolean)
 }
 
 enum class KeyboardEvent {

@@ -7,6 +7,7 @@ import com.nasabadiam.koopod.BuildConfig
 import com.nasabadiam.koopod.podcast.podcastlist.*
 import com.nasabadiam.koopod.ui.GeneralMessageHandler
 import com.nasabadiam.koopod.ui.MessageHandler
+import com.nasabadiam.koopod.ui.player.Player
 import com.nasabadiam.koopod.ui.search.SearchRemoteDataSource
 import com.nasabadiam.koopod.ui.search.SearchRepository
 import com.nasabadiam.koopod.ui.search.SearchService
@@ -164,4 +165,8 @@ object AppModule {
     ): SearchRepository {
         return SearchRepository(podcastLocalDataSource, searchRemoteDataSource)
     }
+
+    @Provides
+    @Singleton
+    fun providePlayer() = Player()
 }

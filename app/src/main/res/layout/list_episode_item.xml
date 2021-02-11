@@ -37,11 +37,10 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="@drawable/bg_play_icon"
-            app:animateOnClick="@{@drawable/ic_pause_play_vector_24_dp}"
             app:layout_constraintBottom_toBottomOf="@id/image"
             app:layout_constraintStart_toStartOf="@id/image"
-            app:setState="@{itemData.isPlaying}"
-            app:srcCompat="@drawable/ic_play_pause_vector_24_dp" />
+            app:setPlayPause="@{itemData.isPlaying}"
+            tools:srcCompat="@drawable/ic_play_pause_vector_24_dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/name"
@@ -53,7 +52,7 @@
             app:layout_constraintBottom_toTopOf="@+id/description"
             app:layout_constraintEnd_toStartOf="@id/number"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintStart_toEndOf="@+id/imageBarrier"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="نام پادکست" />
@@ -84,10 +83,17 @@
             app:layout_constraintBottom_toTopOf="@id/barrier"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintStart_toEndOf="@+id/imageBarrier"
             app:layout_constraintTop_toBottomOf="@+id/name"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text=" توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/imageBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="image,playImage" />
 
         <View
             android:id="@+id/divider"

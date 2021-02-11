@@ -28,6 +28,9 @@ class PodcastDetailViewModel @ViewModelInject constructor(
     private val _podcastData = MutableStateFlow<PodcastModel?>(null)
     val podcastData: StateFlow<PodcastModel?> = _podcastData
 
+    private val _notifyItem = MutableSharedFlow<Pair<Int, PodcastDetailPayload?>>()
+    val notifyItem: SharedFlow<Pair<Int, PodcastDetailPayload?>> = _notifyItem
+
     private val _navigation = MutableSharedFlow<NavDirections?>()
     val navigation: SharedFlow<NavDirections?> = _navigation
 
@@ -66,6 +69,32 @@ class PodcastDetailViewModel @ViewModelInject constructor(
     fun onEpisodeItemClicked(item: EpisodeItem) {
         viewModelScope.launch {
             _playPauseAction.emit(item)
+        }
+    }
+
+    fun onItemPlayed(episodeItem: EpisodeItem) {
+        val index = data.value.indexOf(episodeItem)
+        if (index < 0) return
+        _data.value[index].isPlaying = true
+        viewModelScope.launch {
+            _notifyItem.emit(
+                index to PodcastDetailPayload.PlayPausePayload(
+                    isPlaying = true
+                )
+            )
+        }
+    }
+
+    fun onItemPaused(episodeItem: EpisodeItem) {
+        val index = data.value.indexOf(episodeItem)
+        if (index < 0) return
+        _data.value[index].isPlaying = false
+        viewModelScope.launch {
+            _notifyItem.emit(
+                index to PodcastDetailPayload.PlayPausePayload(
+                    isPlaying = false
+                )
+            )
         }
     }
 }
@@ -116,4 +145,8 @@ data class EpisodeItem(
             )
         }
     }
+}
+
+sealed class PodcastDetailPayload {
+    data class PlayPausePayload(val isPlaying: Boolean) : PodcastDetailPayload()
 }

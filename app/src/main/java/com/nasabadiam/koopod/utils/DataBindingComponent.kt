@@ -95,31 +95,10 @@ class DataBindingComponent {
             }
         }
 
-
-        @JvmStatic
-        @BindingAdapter("app:animateOnClick")
-        fun setAnimateOnClick(view: ImageView, backDrawable: Drawable?) {
-            val front: Animatable = view.drawable as Animatable
-            view.setOnClickListener {
-                if (null == backDrawable) {
-                    front.start()
-                } else {
-                    if (null == view.tag) {
-                        view.setImageDrawable(front as Drawable)
-                        front.start()
-                        view.tag = 0
-                    } else {
-                        view.setImageDrawable(backDrawable)
-                        (backDrawable as Animatable).start()
-                        view.tag = null
-                    }
-                }
-            }
-        }
-
         @JvmStatic
         @BindingAdapter("app:setState")
         fun setAnimateOnClick(view: ImageView, isPlaying: Boolean) {
+            view.setImageDrawable(null)
             val front: Animatable = ContextCompat.getDrawable(
                 view.context,
                 R.drawable.ic_play_pause_vector_24_dp
@@ -137,6 +116,26 @@ class DataBindingComponent {
                 view.setImageDrawable(back as Drawable)
                 (back as Animatable).start()
                 view.tag = null
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("app:setPlayPause")
+        fun setPlayPauseIcon(view: ImageView, isPlaying: Boolean) {
+            view.setImageDrawable(null)
+            val playing = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_round_pause_24
+            ) as Drawable
+            val paused = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_round_play_arrow_24
+            ) as Drawable
+
+            if (isPlaying) {
+                view.setImageDrawable(playing)
+            } else {
+                view.setImageDrawable(paused)
             }
         }
     }

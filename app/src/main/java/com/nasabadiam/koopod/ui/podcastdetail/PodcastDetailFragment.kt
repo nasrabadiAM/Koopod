@@ -17,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.appbar.AppBarLayout
 import com.nasabadiam.koopod.R
 import com.nasabadiam.koopod.databinding.FragmentPodcastDetailBinding
+import com.nasabadiam.koopod.ui.player.PlayerViewModel
 import com.nasabadiam.koopod.utils.collectAsState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,8 +25,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class PodcastDetailFragment : Fragment() {
 
     private val viewModel: PodcastDetailViewModel by viewModels()
-    private val args by navArgs<PodcastDetailFragmentArgs>()
+    private val playerViewModel: PlayerViewModel by viewModels()
 
+    private val args by navArgs<PodcastDetailFragmentArgs>()
 
     private lateinit var podcastImage: ImageView
     private var EXPAND_AVATAR_SIZE: Float = 0F
@@ -93,6 +95,9 @@ class PodcastDetailFragment : Fragment() {
             it?.let { dir ->
                 findNavController().navigate(dir)
             }
+        }
+        collectAsState(viewModel.playPauseAction) {
+            playerViewModel.onPlayPauseAction(it)
         }
     }
 

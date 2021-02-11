@@ -31,6 +31,9 @@ class PodcastDetailViewModel @ViewModelInject constructor(
     private val _navigation = MutableSharedFlow<NavDirections?>()
     val navigation: SharedFlow<NavDirections?> = _navigation
 
+    private val _playPauseAction = MutableSharedFlow<EpisodeItem>()
+    val playPauseAction: SharedFlow<EpisodeItem> = _playPauseAction
+
     private val _message = MutableStateFlow<Int?>(null)
     val message: StateFlow<Int?> = _message
 
@@ -62,12 +65,7 @@ class PodcastDetailViewModel @ViewModelInject constructor(
 
     fun onEpisodeItemClicked(item: EpisodeItem) {
         viewModelScope.launch {
-            _navigation.emit(
-                PodcastDetailFragmentDirections.toPlayer(
-                    item.episodeId,
-                    item.downloadUrl
-                )
-            )
+            _playPauseAction.emit(item)
         }
     }
 }
@@ -84,6 +82,8 @@ data class EpisodeItem(
     val description: String,
     val episodeId: Int
 ) {
+
+    var isPlaying: Boolean = false
 
     fun getEpisodeNum(): String = episodeId.toString()
 

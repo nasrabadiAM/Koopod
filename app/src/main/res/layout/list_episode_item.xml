@@ -32,6 +32,17 @@
             app:visibility="@{itemData.image}"
             tools:src="@drawable/ic_round_search_24" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/playImage"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/bg_play_icon"
+            app:animateOnClick="@{@drawable/ic_pause_play_vector_24_dp}"
+            app:layout_constraintBottom_toBottomOf="@id/image"
+            app:layout_constraintStart_toStartOf="@id/image"
+            app:setState="@{itemData.isPlaying}"
+            app:srcCompat="@drawable/ic_play_pause_vector_24_dp" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/name"
             style="@style/TextAppearance.AppCompat.Title"

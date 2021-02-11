@@ -1,12 +1,16 @@
 package com.nasabadiam.koopod.utils
 
+import android.graphics.drawable.Animatable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.nasabadiam.koopod.R
 import com.nasabadiam.koopod.ResourceState
 
 class DataBindingComponent {
@@ -88,6 +92,51 @@ class DataBindingComponent {
                 } else {
                     view.text = Html.fromHtml(text)
                 }
+            }
+        }
+
+
+        @JvmStatic
+        @BindingAdapter("app:animateOnClick")
+        fun setAnimateOnClick(view: ImageView, backDrawable: Drawable?) {
+            val front: Animatable = view.drawable as Animatable
+            view.setOnClickListener {
+                if (null == backDrawable) {
+                    front.start()
+                } else {
+                    if (null == view.tag) {
+                        view.setImageDrawable(front as Drawable)
+                        front.start()
+                        view.tag = 0
+                    } else {
+                        view.setImageDrawable(backDrawable)
+                        (backDrawable as Animatable).start()
+                        view.tag = null
+                    }
+                }
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("app:setState")
+        fun setAnimateOnClick(view: ImageView, isPlaying: Boolean) {
+            val front: Animatable = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_play_pause_vector_24_dp
+            ) as Animatable
+            val back: Animatable = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_pause_play_vector_24_dp
+            ) as Animatable
+
+            if (isPlaying) {
+                view.setImageDrawable(front as Drawable)
+                front.start()
+                view.tag = 0
+            } else {
+                view.setImageDrawable(back as Drawable)
+                (back as Animatable).start()
+                view.tag = null
             }
         }
     }

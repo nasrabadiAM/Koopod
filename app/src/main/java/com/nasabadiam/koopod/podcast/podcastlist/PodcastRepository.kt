@@ -10,42 +10,49 @@ class PodcastRepository @Inject constructor(
     private val rssRemoteDataSource: RssRemoteDataSource
 ) {
 
-    fun getPodcasts(): Flow<Result<List<PodcastModel>>> {
-        return localDataSource.getPodcasts().map { data ->
+    fun podcasts(): Flow<Result<List<PodcastModel>>> {
+        return localDataSource.podcasts().map { data ->
             Result.Success(data.map { it.toPodcastModel() })
         }
     }
 
-    suspend fun subscribeToPodcast(podcast: PodcastModel): Flow<Result<PodcastModel>> = flow {
-        if (localDataSource.getPodcasts(podcast.rssLink) != null) {
-            emit(
-                Result.Error(
-                    ErrorModel.Database(
-                        Throwable(DUPLICATE_SUBSCRIBE_ERROR)
-                    )
-                )
-            )
-        }
-        val podcastResult = rssRemoteDataSource.getPodcast(podcast.rssLink)
-        if (podcastResult is Result.Success) {
-            if (localDataSource.getPodcasts(podcastResult.data.rssLink) != null) {
-                emit(
-                    Result.Error<PodcastModel>(
-                        ErrorModel.Database(
-                            Throwable(DUPLICATE_SUBSCRIBE_ERROR)
-                        )
-                    )
-                )
+    suspend fun podcast(rssLink: String): Flow<Result<PodcastModel>> {
+        return localDataSource.podcast(rssLink).map { data ->
+            if (data == null) {
+                Result.Error(ErrorModel.EmptyResult(NoSuchItemException()))
             } else {
-                localDataSource.insertPodcast(podcastResult.data)
-                podcastResult.data.isSubscribed = true
-                emit(podcastResult)
+                Result.Success(data)
             }
         }
     }
 
-    companion object {
-        const val DUPLICATE_SUBSCRIBE_ERROR = "Podcast has subscribed already!"
+    fun episodes(): Flow<Result<List<EpisodeModel>>> {
+        return localDataSource.episodes().map { data ->
+            Result.Success(data.map { it.toEpisodeModel() })
+        }
+    }
 
+    suspend fun subscribeToPodcast(podcast: PodcastModel): Flow<Result<PodcastModel>> = flow {
+        if (isSubscribed(podcast.rssLink)) {
+            emit(Result.Error(ErrorModel.Database(DuplicatePodcastException())))
+        }
+        val podcastResult = rssRemoteDataSource.getPodcast(podcast.rssLink)
+        if (podcastResult is Result.Success) {
+            val isSubscribed = isSubscribed(podcastResult.data.rssLink)
+            if (isSubscribed) {
+                emit(Result.Error<PodcastModel>(ErrorModel.Database(DuplicatePodcastException())))
+            } else {
+                localDataSource.insertPodcastWithEpisodes(podcastResult.data)
+                podcastResult.data.isSubscribed = true
+                emit(podcastResult)
+            }
+        } else {
+            emit(podcastResult)
+        }
+    }
+
+    private suspend fun isSubscribed(rssLink: String): Boolean {
+        val isSubscribed = localDataSource.getPodcast(rssLink) != null
+        return isSubscribed
     }
 }

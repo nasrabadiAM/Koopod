@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.nasabadiam.koopod.R
 import com.nasabadiam.koopod.ResourceState
+import com.nasabadiam.koopod.podcast.podcastlist.DuplicatePodcastException
 import com.nasabadiam.koopod.podcast.podcastlist.PodcastModel
 import com.nasabadiam.koopod.podcast.podcastlist.PodcastRepository
 import com.nasabadiam.koopod.podcast.podcastlist.Result
@@ -98,7 +99,7 @@ class SearchViewModel @ViewModelInject constructor(
             val index = _data.value.indexOf(item)
             _data.value[index].isLoading = true
             _notifyItem.emit(
-                index to SearchPodcastItem.LoadingPayLoad(
+                index to SearchPodcastItem.SubscribePayLoad(
                     isLoading = true,
                     isSubscribed = false
                 )
@@ -110,7 +111,7 @@ class SearchViewModel @ViewModelInject constructor(
                         _data.value[index].isLoading = false
                         _data.value[index].isSubscribed = true
                         _notifyItem.emit(
-                            index to SearchPodcastItem.LoadingPayLoad(
+                            index to SearchPodcastItem.SubscribePayLoad(
                                 isLoading = false,
                                 isSubscribed = true
                             )
@@ -118,11 +119,11 @@ class SearchViewModel @ViewModelInject constructor(
                         _popupMessage.emit(R.string.podcast_successfully_added)
                     }
                     is Result.Error -> {
-                        if (result.error.throwable.message == PodcastRepository.DUPLICATE_SUBSCRIBE_ERROR) {
+                        if (result.error.throwable is DuplicatePodcastException) {
                             _data.value[index].isLoading = false
                             _data.value[index].isSubscribed = true
                             _notifyItem.emit(
-                                index to SearchPodcastItem.LoadingPayLoad(
+                                index to SearchPodcastItem.SubscribePayLoad(
                                     isLoading = false,
                                     isSubscribed = true
                                 )
@@ -131,7 +132,7 @@ class SearchViewModel @ViewModelInject constructor(
                             _data.value[index].isLoading = false
                             _data.value[index].isSubscribed = false
                             _notifyItem.emit(
-                                index to SearchPodcastItem.LoadingPayLoad(
+                                index to SearchPodcastItem.SubscribePayLoad(
                                     isLoading = false,
                                     isSubscribed = false
                                 )
@@ -183,7 +184,7 @@ data class SearchPodcastItem(
         }
     }
 
-    data class LoadingPayLoad(val isLoading: Boolean, val isSubscribed: Boolean)
+    data class SubscribePayLoad(val isLoading: Boolean, val isSubscribed: Boolean)
 }
 
 enum class KeyboardEvent {

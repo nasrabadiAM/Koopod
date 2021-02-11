@@ -4,11 +4,13 @@
     <string name="list_fragment_title">List Fragment</string>
     <string name="search_bar_hint">نام پادکست یا آدرس فید</string>
     <string name="empty_message">شما پادکستی در لیست پادکست‌های خود ندارید، لطفا از قسمت جستجو پادکست‌های مورد علاقه خود را پیدا کرده و به لیست پادکست‌های خود اضافه کنید.</string>
+    <string name="empty_episodes">تا به حال برای این پادکست، قسمتی منتشر نشده!</string>
     <string name="empty_search_message">نتیجه‌ای برای عبارت وارد شده پیدا نشد!</string>
     <string name="empty_search_query">لطفا ابتدا کلمه مورد نظر را نوشته، سپس دکمه جستجو را بفشارید.</string>
     <string name="server_connection_error_message">در برقراری ارتباط مشکلی پیش آمده!</string>
     <string name="unknown_error_message"> مشکلی پیش آمده، لطفا دوباره تلاش کنید!</string>
     <string name="podcast_already_subscribed">این پادکست، همین الان در لیست پادکست‌های شما قرار دارد، نمی‌توانید آن را دوباره اضافه کنید!</string>
+    <string name="no_result_found">نتیجه‌ای وجود ندارد!</string>
     <string name="general_http_error_message">در برقراری ارتباط مشکلی پیش آمده!</string>
     <string name="network_error_message">اتصال اینترنتی خود را بررسی کنید!</string>
     <string name="podcast_successfully_added">"پادکست مورد نظر به لیست پادکست‌های شما اضافه شد. "</string>

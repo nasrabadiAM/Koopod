@@ -71,6 +71,17 @@ object Libs {
         }
     }
 
+    object ExoPlayer {
+        private const val version = "2.13.0"
+        const val full = "com.google.android.exoplayer:exoplayer:$version"
+        const val core = "com.google.android.exoplayer:exoplayer-core:$version"
+        const val dash = "com.google.android.exoplayer:exoplayer-dash:$version"
+        const val ui = "com.google.android.exoplayer:exoplayer-ui:$version"
+        const val smoothStreaming =
+            "com.google.android.exoplayer:exoplayer-smoothstreaming:$version"
+        const val hls = "com.google.android.exoplayer:exoplayer-hls:$version"
+    }
+
     object AndroidX {
         const val appcompat = "androidx.appcompat:appcompat:1.2.0-rc01"
         const val coreKtx = "androidx.core:core-ktx:1.5.0-beta01"

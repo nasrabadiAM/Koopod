@@ -96,6 +96,8 @@ dependencies {
     debugImplementation Libs.Retrofit.Chucker.debug
     releaseImplementation Libs.Retrofit.Chucker.release
 
+    implementation Libs.ExoPlayer.full
+
     androidTestImplementation Libs.junit
     androidTestImplementation Libs.AndroidX.Test.core
     androidTestImplementation Libs.AndroidX.Test.espressoCore

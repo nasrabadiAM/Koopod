@@ -1,6 +1,5 @@
 package com.nasabadiam.koopod.podcast.podcastlist
 
-import android.util.Log
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -31,6 +30,12 @@ interface PodcastDao {
     @Query("SELECT * FROM episode where podcast_id = :podcastId")
     suspend fun getEpisodes(podcastId: Long): List<EpisodeEntity>
 
+    @Query("SELECT podcast_id FROM episode where guid = :guid")
+    suspend fun getPodcastId(guid: String): Long
+
+    @Query("SELECT rss_link FROM podcast where id = :podcastId")
+    suspend fun getPodcastRssLink(podcastId: Long): String
+
     @Insert
     suspend fun insertEpisodesList(episodes: List<EpisodeEntity>)
 
@@ -50,7 +55,12 @@ interface PodcastDao {
         } else {
             podcast
         }
-        Log.e("","")
         emit(result)
+    }
+
+    @Transaction
+    suspend fun getPodcastRssLinkWithEpisodeGuid(guid: String): String {
+        val podcastId = getPodcastId(guid)
+        return getPodcastRssLink(podcastId)
     }
 }

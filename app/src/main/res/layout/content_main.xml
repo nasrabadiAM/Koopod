@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         app:defaultNavHost="true"
         app:navGraph="@navigation/mobile_graph"
-        tools:context=".MainActivity" />
+        tools:context=".ui.MainActivity" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/playerView"
@@ -23,16 +23,14 @@
         android:layout_gravity="bottom"
         android:background="?attr/colorSurface"
         android:elevation="16dp"
-        android:visibility="gone"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image"
             android:layout_width="56dp"
-            android:layout_height="56dp"
-            app:srcCompat="@drawable/ic_round_search_24"
-            tools:src="@drawable/ic_round_search_24" />
+            android:layout_height="56dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/name"
@@ -44,6 +42,9 @@
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:freezesText="true"
             android:singleLine="true"
             tools:text="نام اپیزود در حال پخش" />
 
@@ -52,5 +53,10 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             tools:srcCompat="@drawable/ic_play_pause_vector_24_dp" />
+
+        <ProgressBar
+            android:id="@+id/playIconLoading"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </FrameLayout>

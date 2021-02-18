@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="com.nasabadiam.koopod.ui.podcastdetail.PodcastDetailViewModel" />
+
+        <variable
+            name="episodeGuid"
+            type="String" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -119,6 +123,7 @@
             android:paddingBottom="72dp"
             app:contentVisibility="@{viewModel.state}"
             app:episodeItems="@{viewModel.data}"
+            app:guid="@{episodeGuid}"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:viewModel="@{viewModel}"
             tools:itemCount="10"

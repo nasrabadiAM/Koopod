@@ -6,6 +6,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.nasabadiam.koopod.BR
 import com.nasabadiam.koopod.databinding.ListEpisodeItemBinding
+import com.nasabadiam.koopod.ui.player.PlayerStates
 import com.nasabadiam.koopod.utils.DataBindingComponent
 
 class PodcastDetailAdapter : RecyclerView.Adapter<EpisodeItemViewHolder>() {
@@ -71,11 +72,13 @@ class EpisodeItemViewHolder(
         episodeItem: EpisodeItem,
         payload: PodcastDetailPayload.PlayPausePayload
     ) {
-        episodeItem.isPlaying = payload.isPlaying
-        DataBindingComponent.setAnimateOnClick(
-            (binding as ListEpisodeItemBinding).playImage,
-            payload.isPlaying
-        )
+        episodeItem.playState = payload.state
+        if (payload.state != PlayerStates.LOADING) {
+            DataBindingComponent.setAnimateOnClick(
+                (binding as ListEpisodeItemBinding).playImage,
+                payload.state.isPlaying()
+            )
+        }
     }
 
     fun recycle() {

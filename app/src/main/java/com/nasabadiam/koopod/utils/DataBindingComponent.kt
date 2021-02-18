@@ -12,6 +12,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.nasabadiam.koopod.R
 import com.nasabadiam.koopod.ResourceState
+import com.nasabadiam.koopod.ui.player.PlayerStates
 
 class DataBindingComponent {
 
@@ -23,6 +24,7 @@ class DataBindingComponent {
             view.visibility = when {
                 input is Boolean -> if (input) View.VISIBLE else View.GONE
                 input is String -> if (input.isEmpty()) View.GONE else View.VISIBLE
+                input is PlayerStates -> if (input == PlayerStates.LOADING) View.VISIBLE else View.GONE
                 input != null -> View.VISIBLE
                 else -> View.GONE
             }
@@ -136,6 +138,36 @@ class DataBindingComponent {
                 view.setImageDrawable(playing)
             } else {
                 view.setImageDrawable(paused)
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("app:setPlayPauseState")
+        fun setPlayPauseIcon(view: ImageView, state: PlayerStates) {
+            view.setImageDrawable(null)
+            val playing = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_round_pause_24
+            ) as Drawable
+            val paused = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_round_play_arrow_24
+            ) as Drawable
+
+            view.visibility = View.VISIBLE
+            when (state) {
+                PlayerStates.LOADING -> {
+                    view.visibility = View.GONE
+                }
+                PlayerStates.NOTHING -> {
+                    view.setImageDrawable(paused)
+                }
+                PlayerStates.PLAYING -> {
+                    view.setImageDrawable(playing)
+                }
+                PlayerStates.PAUSED -> {
+                    view.setImageDrawable(paused)
+                }
             }
         }
     }

@@ -14,4 +14,6 @@
     <string name="general_http_error_message">در برقراری ارتباط مشکلی پیش آمده!</string>
     <string name="network_error_message">اتصال اینترنتی خود را بررسی کنید!</string>
     <string name="podcast_successfully_added">"پادکست مورد نظر به لیست پادکست‌های شما اضافه شد. "</string>
+    <string name="player_notification_channel_name">Player</string>
+    <string name="player_notification_channel_description">We use this channel to show player notification!</string>
 </resources>

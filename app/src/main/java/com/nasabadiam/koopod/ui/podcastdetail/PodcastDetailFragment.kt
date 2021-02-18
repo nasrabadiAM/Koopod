@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -23,7 +24,7 @@ import kotlin.math.roundToInt
 class PodcastDetailFragment : Fragment() {
 
     private val viewModel: PodcastDetailViewModel by viewModels()
-    private val playerViewModel: PlayerViewModel by viewModels()
+    private val playerViewModel: PlayerViewModel by activityViewModels()
 
     private val args by navArgs<PodcastDetailFragmentArgs>()
 
@@ -43,6 +44,7 @@ class PodcastDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         viewBinding = FragmentPodcastDetailBinding.inflate(inflater, container, false).apply {
+            episodeGuid = args.guid
             viewModel = this@PodcastDetailFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
         }
@@ -53,21 +55,19 @@ class PodcastDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.onViewCreated(args.rssLink)
+        viewModel.onViewCreated(args)
         collectAsState(viewModel.navigation) {
             it?.let { dir ->
                 findNavController().navigate(dir)
             }
         }
         collectAsState(viewModel.playPauseAction) {
-            playerViewModel.onPlayPauseAction(it)
+            playerViewModel.onPlayPauseActionClicked(it)
         }
-        collectAsState(playerViewModel.notifyItemPlayed) {
-            it?.let { episodeItem -> viewModel.onItemPlayed(episodeItem) }
+        collectAsState(playerViewModel.playerState) { (state, it) ->
+            viewModel.onItemStateChanged(state, it)
         }
-        collectAsState(playerViewModel.notifyItemPaused) {
-            it?.let { episodeItem -> viewModel.onItemPaused(episodeItem) }
-        }
+
         collectAsState(viewModel.notifyItem) { (index, payload) ->
             viewBinding.recyclerView.adapter?.notifyItemChanged(index, payload)
         }

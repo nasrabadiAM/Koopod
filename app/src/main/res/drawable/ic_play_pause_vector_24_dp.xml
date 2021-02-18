@@ -14,12 +14,12 @@
             <group android:name="group" android:pivotX="12" android:pivotY="12">
                 <path
                     android:name="play1"
-                    android:fillColor="#4d4d4d"
+                    android:fillColor="?attr/colorControlNormal"
                     android:pathData="M 8 5.14 L 8 12.5 L 19 12.14 L 19 12.14 Z" />
 
                 <path
                     android:name="play2"
-                    android:fillColor="#4d4d4d"
+                    android:fillColor="?attr/colorControlNormal"
                     android:pathData="M 8 11.5 L 8 19.14 L 19 12.14 L 19 12.14 Z" />
             </group>
         </vector>

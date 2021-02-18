@@ -4,18 +4,33 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.nasabadiam.koopod.ui.podcastdetail.EpisodeItem
 import com.nasabadiam.koopod.utils.BaseViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
-class PlayerViewModel @ViewModelInject constructor(private val player: Player) : BaseViewModel() {
+class PlayerViewModel @ViewModelInject constructor() : BaseViewModel() {
 
-    val notifyItemPaused: SharedFlow<EpisodeItem?> = player.notifyItemPaused
-    val notifyItemPlayed: SharedFlow<EpisodeItem?> = player.notifyItemPlayed
-    val playerViewState: SharedFlow<EpisodeItem?> = player.playerViewState
+    private val _playerState = MutableSharedFlow<Pair<PlayerStates, EpisodeItem?>>()
+    val playerState: SharedFlow<Pair<PlayerStates, EpisodeItem?>> = _playerState
 
-    fun onPlayPauseAction(episodeItem: EpisodeItem? = player.currentTrack) {
+    private val _playerAction = MutableSharedFlow<EpisodeItem?>()
+    val playerAction: SharedFlow<EpisodeItem?> = _playerAction
+
+    fun onPlayPauseActionClicked(episodeItem: EpisodeItem? = null) {
         viewModelScope.launch {
-            player.playOrPause(episodeItem)
+            _playerAction.emit(episodeItem)
         }
+    }
+
+    suspend fun onPlayerDisconnected() {
+        _playerState.emit(PlayerStates.NOTHING to null)
+    }
+
+    suspend fun onPlayerTrackEnded() {
+        _playerState.emit(PlayerStates.NOTHING to null)
+    }
+
+    suspend fun onPlayerStateChanged(state: PlayerStates, episodeItem: EpisodeItem?) {
+        _playerState.emit(state to episodeItem)
     }
 }

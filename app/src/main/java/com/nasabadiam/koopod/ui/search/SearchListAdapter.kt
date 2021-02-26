@@ -41,7 +41,7 @@ class SearchListAdapter : RecyclerView.Adapter<SearchPodcastItemViewHolder>() {
         } else {
             payloads.forEach {
                 when (it) {
-                    is SearchPodcastItem.SubscribePayLoad -> {
+                    is SearchPayload.SubscribeResultPayLoad -> {
                         holder.bindLoadingPayload(items[position], it)
                     }
                 }
@@ -73,7 +73,7 @@ class SearchPodcastItemViewHolder(
 
     fun bindLoadingPayload(
         searchItem: SearchPodcastItem,
-        payload: SearchPodcastItem.SubscribePayLoad
+        payload: SearchPayload.SubscribeResultPayLoad
     ) {
         searchItem.isLoading = payload.isLoading
         searchItem.isSubscribed = payload.isSubscribed

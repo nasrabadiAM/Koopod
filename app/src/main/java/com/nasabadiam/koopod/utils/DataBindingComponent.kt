@@ -1,13 +1,18 @@
 package com.nasabadiam.koopod.utils
 
+import android.graphics.drawable.Animatable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.nasabadiam.koopod.R
 import com.nasabadiam.koopod.ResourceState
+import com.nasabadiam.koopod.ui.player.PlayerStates
 
 class DataBindingComponent {
 
@@ -19,6 +24,7 @@ class DataBindingComponent {
             view.visibility = when {
                 input is Boolean -> if (input) View.VISIBLE else View.GONE
                 input is String -> if (input.isEmpty()) View.GONE else View.VISIBLE
+                input is PlayerStates -> if (input == PlayerStates.LOADING) View.VISIBLE else View.GONE
                 input != null -> View.VISIBLE
                 else -> View.GONE
             }
@@ -87,6 +93,80 @@ class DataBindingComponent {
                     view.text = Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
                 } else {
                     view.text = Html.fromHtml(text)
+                }
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("app:setState")
+        fun setAnimateOnClick(view: ImageView, isPlaying: Boolean) {
+            view.setImageDrawable(null)
+            val front: Animatable = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_play_pause_vector_24_dp
+            ) as Animatable
+            val back: Animatable = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_pause_play_vector_24_dp
+            ) as Animatable
+
+            if (isPlaying) {
+                view.setImageDrawable(front as Drawable)
+                front.start()
+                view.tag = 0
+            } else {
+                view.setImageDrawable(back as Drawable)
+                (back as Animatable).start()
+                view.tag = null
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("app:setPlayPause")
+        fun setPlayPauseIcon(view: ImageView, isPlaying: Boolean) {
+            view.setImageDrawable(null)
+            val playing = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_round_pause_24
+            ) as Drawable
+            val paused = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_round_play_arrow_24
+            ) as Drawable
+
+            if (isPlaying) {
+                view.setImageDrawable(playing)
+            } else {
+                view.setImageDrawable(paused)
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("app:setPlayPauseState")
+        fun setPlayPauseIcon(view: ImageView, state: PlayerStates) {
+            view.setImageDrawable(null)
+            val playing = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_round_pause_24
+            ) as Drawable
+            val paused = ContextCompat.getDrawable(
+                view.context,
+                R.drawable.ic_round_play_arrow_24
+            ) as Drawable
+
+            view.visibility = View.VISIBLE
+            when (state) {
+                PlayerStates.LOADING -> {
+                    view.visibility = View.GONE
+                }
+                PlayerStates.NOTHING -> {
+                    view.setImageDrawable(paused)
+                }
+                PlayerStates.PLAYING -> {
+                    view.setImageDrawable(playing)
+                }
+                PlayerStates.PAUSED -> {
+                    view.setImageDrawable(paused)
                 }
             }
         }

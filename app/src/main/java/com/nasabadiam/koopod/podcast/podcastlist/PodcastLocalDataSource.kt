@@ -24,4 +24,8 @@ class PodcastLocalDataSource @Inject constructor(
     suspend fun insertPodcastWithEpisodes(podcastModel: PodcastModel) {
         podcastDao.insertPodcastWithEpisodes(PodcastEntity.fromPodcastModel(podcastModel))
     }
+
+    suspend fun getRssLinkWithEpisodeGuid(episodeGuid: String): String {
+        return podcastDao.getPodcastRssLinkWithEpisodeGuid(episodeGuid)
+    }
 }

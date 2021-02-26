@@ -3,6 +3,8 @@ package com.nasabadiam.koopod.di
 import android.content.Context
 import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.nasabadiam.koopod.BuildConfig
 import com.nasabadiam.koopod.podcast.podcastlist.*
 import com.nasabadiam.koopod.ui.GeneralMessageHandler
@@ -163,5 +165,13 @@ object AppModule {
         searchRemoteDataSource: SearchRemoteDataSource
     ): SearchRepository {
         return SearchRepository(podcastLocalDataSource, searchRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideExoPlayer(
+        @ApplicationContext context: Context
+    ): ExoPlayer {
+        return SimpleExoPlayer.Builder(context).build()
     }
 }

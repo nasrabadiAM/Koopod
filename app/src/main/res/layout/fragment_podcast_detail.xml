@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="com.nasabadiam.koopod.ui.podcastdetail.PodcastDetailViewModel" />
+
+        <variable
+            name="episodeGuid"
+            type="String" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -30,13 +34,13 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <FrameLayout
-                    android:id="@+id/fl_background"
+                    android:id="@+id/toolbarBackground"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true" />
 
                 <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/anim_toolbar"
+                    android:id="@+id/animToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:visibility="invisible"
@@ -44,7 +48,7 @@
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_profile_name_single"
+                    android:id="@+id/toolbarSingleLineTitleTextView"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
@@ -63,7 +67,7 @@
                     tools:visibility="visible" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_workaround"
+                    android:id="@+id/workaroundTextView"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
@@ -81,7 +85,7 @@
                     tools:visibility="invisible" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_profile_name"
+                    android:id="@+id/toolbarTextView"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -119,10 +123,11 @@
             android:paddingBottom="72dp"
             app:contentVisibility="@{viewModel.state}"
             app:episodeItems="@{viewModel.data}"
+            app:guid="@{episodeGuid}"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:viewModel="@{viewModel}"
             tools:itemCount="10"
-            tools:listitem="@layout/list_podcast_item" />
+            tools:listitem="@layout/list_episode_item" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/message"

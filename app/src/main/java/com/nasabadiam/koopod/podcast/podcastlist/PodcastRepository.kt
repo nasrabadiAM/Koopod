@@ -55,4 +55,8 @@ class PodcastRepository @Inject constructor(
         val isSubscribed = localDataSource.getPodcast(rssLink) != null
         return isSubscribed
     }
+
+    suspend fun getRssLinkFromEpisodeGuid(episodeGuid: String): String {
+        return localDataSource.getRssLinkWithEpisodeGuid(episodeGuid)
+    }
 }

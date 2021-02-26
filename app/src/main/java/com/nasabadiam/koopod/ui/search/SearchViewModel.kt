@@ -28,8 +28,8 @@ class SearchViewModel @ViewModelInject constructor(
     private val _data = MutableStateFlow<List<SearchPodcastItem>>(listOf())
     val data: StateFlow<List<SearchPodcastItem>> = _data
 
-    private val _notifyItem = MutableSharedFlow<Pair<Int, Any?>>()
-    val notifyItem: SharedFlow<Pair<Int, Any?>> = _notifyItem
+    private val _notifyItem = MutableSharedFlow<Pair<Int, SearchPayload?>>()
+    val notifyItem: SharedFlow<Pair<Int, SearchPayload?>> = _notifyItem
 
     private val _navigation = MutableSharedFlow<NavDirections?>()
     val navigation: SharedFlow<NavDirections?> = _navigation
@@ -99,7 +99,7 @@ class SearchViewModel @ViewModelInject constructor(
             val index = _data.value.indexOf(item)
             _data.value[index].isLoading = true
             _notifyItem.emit(
-                index to SearchPodcastItem.SubscribePayLoad(
+                index to SearchPayload.SubscribeResultPayLoad(
                     isLoading = true,
                     isSubscribed = false
                 )
@@ -111,7 +111,7 @@ class SearchViewModel @ViewModelInject constructor(
                         _data.value[index].isLoading = false
                         _data.value[index].isSubscribed = true
                         _notifyItem.emit(
-                            index to SearchPodcastItem.SubscribePayLoad(
+                            index to SearchPayload.SubscribeResultPayLoad(
                                 isLoading = false,
                                 isSubscribed = true
                             )
@@ -123,7 +123,7 @@ class SearchViewModel @ViewModelInject constructor(
                             _data.value[index].isLoading = false
                             _data.value[index].isSubscribed = true
                             _notifyItem.emit(
-                                index to SearchPodcastItem.SubscribePayLoad(
+                                index to SearchPayload.SubscribeResultPayLoad(
                                     isLoading = false,
                                     isSubscribed = true
                                 )
@@ -132,7 +132,7 @@ class SearchViewModel @ViewModelInject constructor(
                             _data.value[index].isLoading = false
                             _data.value[index].isSubscribed = false
                             _notifyItem.emit(
-                                index to SearchPodcastItem.SubscribePayLoad(
+                                index to SearchPayload.SubscribeResultPayLoad(
                                     isLoading = false,
                                     isSubscribed = false
                                 )
@@ -183,8 +183,10 @@ data class SearchPodcastItem(
             }
         }
     }
+}
 
-    data class SubscribePayLoad(val isLoading: Boolean, val isSubscribed: Boolean)
+sealed class SearchPayload {
+    data class SubscribeResultPayLoad(val isLoading: Boolean, val isSubscribed: Boolean) : SearchPayload()
 }
 
 enum class KeyboardEvent {

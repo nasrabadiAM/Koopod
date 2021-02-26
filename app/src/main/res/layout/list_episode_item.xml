@@ -32,6 +32,24 @@
             app:visibility="@{itemData.image}"
             tools:src="@drawable/ic_round_search_24" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/playImage"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/bg_play_icon"
+            app:layout_constraintBottom_toBottomOf="@id/image"
+            app:layout_constraintStart_toStartOf="@id/image"
+            app:setPlayPauseState="@{itemData.playState}"
+            tools:srcCompat="@drawable/ic_play_pause_vector_24_dp" />
+
+        <ProgressBar
+            android:id="@+id/playLoading"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintBottom_toBottomOf="@id/image"
+            app:layout_constraintStart_toStartOf="@id/image"
+            app:visibility="@{itemData.playState}" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/name"
             style="@style/TextAppearance.AppCompat.Title"
@@ -42,7 +60,7 @@
             app:layout_constraintBottom_toTopOf="@+id/description"
             app:layout_constraintEnd_toStartOf="@id/number"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintStart_toEndOf="@+id/imageBarrier"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="نام پادکست" />
@@ -73,10 +91,17 @@
             app:layout_constraintBottom_toTopOf="@id/barrier"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintStart_toEndOf="@+id/imageBarrier"
             app:layout_constraintTop_toBottomOf="@+id/name"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text=" توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست توضیحات پادکست" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/imageBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="image,playImage" />
 
         <View
             android:id="@+id/divider"

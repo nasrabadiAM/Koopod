@@ -6,6 +6,8 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.nasabadiam.koopod.BR
 import com.nasabadiam.koopod.databinding.ListEpisodeItemBinding
+import com.nasabadiam.koopod.ui.player.PlayerStates
+import com.nasabadiam.koopod.utils.DataBindingComponent
 
 class PodcastDetailAdapter : RecyclerView.Adapter<EpisodeItemViewHolder>() {
 
@@ -31,14 +33,27 @@ class PodcastDetailAdapter : RecyclerView.Adapter<EpisodeItemViewHolder>() {
         holder.bind(items[position], onItemClickListener)
     }
 
+    override fun onBindViewHolder(
+        holder: EpisodeItemViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            payloads.forEach {
+                when (it) {
+                    is PodcastDetailPayload.PlayPausePayload -> {
+                        holder.bindPlayPausePayload(items[position], it)
+                    }
+                }
+            }
+        }
+    }
+
     override fun onViewRecycled(holder: EpisodeItemViewHolder) {
         holder.recycle()
         super.onViewRecycled(holder)
-    }
-
-    override fun onViewDetachedFromWindow(holder: EpisodeItemViewHolder) {
-        onItemClickListener = null
-        super.onViewDetachedFromWindow(holder)
     }
 
     override fun getItemCount(): Int = items.count()
@@ -51,6 +66,19 @@ class EpisodeItemViewHolder(
     fun bind(podcastItem: EpisodeItem, onItemClick: EpisodeItemClickListener?) {
         binding.setVariable(BR.itemData, podcastItem)
         binding.setVariable(BR.itemClick, onItemClick)
+    }
+
+    fun bindPlayPausePayload(
+        episodeItem: EpisodeItem,
+        payload: PodcastDetailPayload.PlayPausePayload
+    ) {
+        episodeItem.playState = payload.state
+        if (payload.state != PlayerStates.LOADING) {
+            DataBindingComponent.setAnimateOnClick(
+                (binding as ListEpisodeItemBinding).playImage,
+                payload.state.isPlaying()
+            )
+        }
     }
 
     fun recycle() {

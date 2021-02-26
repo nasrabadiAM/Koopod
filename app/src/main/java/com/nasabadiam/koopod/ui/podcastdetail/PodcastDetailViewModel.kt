@@ -1,5 +1,6 @@
 package com.nasabadiam.koopod.ui.podcastdetail
 
+import android.app.PendingIntent
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
@@ -10,9 +11,11 @@ import com.nasabadiam.koopod.podcast.podcastlist.PodcastModel
 import com.nasabadiam.koopod.podcast.podcastlist.PodcastRepository
 import com.nasabadiam.koopod.podcast.podcastlist.Result
 import com.nasabadiam.koopod.ui.MessageHandler
+import com.nasabadiam.koopod.ui.player.PlayerStates
 import com.nasabadiam.koopod.utils.BaseViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 class PodcastDetailViewModel @ViewModelInject constructor(
     private val podcastRepository: PodcastRepository,
@@ -28,14 +31,25 @@ class PodcastDetailViewModel @ViewModelInject constructor(
     private val _podcastData = MutableStateFlow<PodcastModel?>(null)
     val podcastData: StateFlow<PodcastModel?> = _podcastData
 
+    private val _notifyItem = MutableSharedFlow<Pair<Int, PodcastDetailPayload?>>()
+    val notifyItem: SharedFlow<Pair<Int, PodcastDetailPayload?>> = _notifyItem
+
     private val _navigation = MutableSharedFlow<NavDirections?>()
     val navigation: SharedFlow<NavDirections?> = _navigation
+
+    private val _playPauseAction = MutableSharedFlow<EpisodeItem>()
+    val playPauseAction: SharedFlow<EpisodeItem> = _playPauseAction
 
     private val _message = MutableStateFlow<Int?>(null)
     val message: StateFlow<Int?> = _message
 
-    fun onViewCreated(rssLink: String) {
+    fun onViewCreated(args: PodcastDetailFragmentArgs) {
         viewModelScope.launch {
+            val rssLink = if (args.rssLink.isEmpty()) {
+                podcastRepository.getRssLinkFromEpisodeGuid(requireNotNull(args.guid))
+            } else {
+                args.rssLink
+            }
             podcastRepository.podcast(rssLink).collect {
                 when (it) {
                     is Result.Success -> {
@@ -55,19 +69,22 @@ class PodcastDetailViewModel @ViewModelInject constructor(
                         _message.emit(messageHandler.handle(it.error))
                     }
                 }
-
             }
         }
     }
 
     fun onEpisodeItemClicked(item: EpisodeItem) {
         viewModelScope.launch {
-            _navigation.emit(
-                PodcastDetailFragmentDirections.toPlayer(
-                    item.episodeId,
-                    item.downloadUrl
-                )
-            )
+            _playPauseAction.emit(item)
+        }
+    }
+
+    fun onItemStateChanged(state: PlayerStates, episodeItem: EpisodeItem?) {
+        val index = data.value.indexOf(episodeItem)
+        if (index < 0) return
+        _data.value[index].playState = state
+        viewModelScope.launch {
+            _notifyItem.emit(index to PodcastDetailPayload.PlayPausePayload(state))
         }
     }
 }
@@ -83,7 +100,10 @@ data class EpisodeItem(
     val streamUrl: String,
     val description: String,
     val episodeId: Int
-) {
+) : Serializable {
+
+    var contentIntent: PendingIntent? = null
+    var playState: PlayerStates = PlayerStates.NOTHING
 
     fun getEpisodeNum(): String = episodeId.toString()
 
@@ -116,4 +136,8 @@ data class EpisodeItem(
             )
         }
     }
+}
+
+sealed class PodcastDetailPayload {
+    data class PlayPausePayload(val state: PlayerStates) : PodcastDetailPayload()
 }
